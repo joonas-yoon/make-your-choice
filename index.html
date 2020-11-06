@@ -17,11 +17,6 @@
 </head>
 <body>
   <div id="main">
-    <div class="container">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec bibendum dolor, quis feugiat enim.</p>
-      <p>Nulla molestie urna quis augue sodales, vel pharetra eros porttitor. Nulla ut urna vel felis posuere sodales. Fusce ac nulla rhoncus, maximus diam a, venenatis sapien. Donec a enim id nulla ultricies pharetra. Maecenas in neque sollicitudin, ultrices risus sit amet, consequat dui. Duis ut porta augue.</p>
-      <p>Curabitur nec lacus vitae lectus tristique sagittis eget non metus. Suspendisse pulvinar, nibh et aliquam fermentum, diam odio viverra lacus, at fringilla velit augue sit amet tortor.</p>
-    </div>
   </div>
   <div class="actions" id="actions">
     <button class="btn btn-dark">Next</button>
@@ -36,6 +31,18 @@
 
     const lorem = ["Lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing", "elit.", "Donec", "quis", "nisl", "sed", "nisi", "vestibulum", "convallis.", "Praesent", "eget", "ex", "tempus,", "sodales", "nunc", "eu,", "vulputate", "metus.", "Phasellus", "ut", "feugiat", "nulla,", "at", "tincidunt", "neque."];
 
+    function get_sample_story(){
+      let html = '';
+      for(var i=0; i<Math.random()*5; ++i) {
+        let p = '';
+        for(var j=0; j<Math.random()*300; ++j) {
+          p += '<span>' + lorem[Math.floor(Math.random() * lorem.length)] + '</span> '
+        }
+        html += '<p>' + p + '</p>';
+      }
+      return html;
+    }
+
     function create_box_story(html) {
       var el = document.createElement('div');
       el.className = 'container';
@@ -45,18 +52,13 @@
 
     function btn_action(evt){
       evt.preventDefault();
-      let html = '';
-      for(var i=0; i<Math.random()*5; ++i) {
-        let p = '';
-        for(var j=0; j<Math.random()*300; ++j) {
-          p += lorem[Math.floor(Math.random() * lorem.length)] + ' '
-        }
-        html += '<p>' + p + '</p>';
-      }
-      create_box_story(html);
+      create_box_story(get_sample_story());
     }
 
     $('.btn').on('click', btn_action);
+    
+    // Initial
+    create_box_story(get_sample_story());
   });
   </script>
 </body>
