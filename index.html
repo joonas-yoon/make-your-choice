@@ -3,6 +3,13 @@
 <head>
   <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <style>
+    #main {
+      padding-top: 1rem;
+    }
+    #actions {
+      padding-bottom: 1rem;
+    }
+
     .container {
       background: #fafafa;
       border-radius: 5px;
@@ -16,10 +23,9 @@
   </style>
 </head>
 <body>
-  <div id="main">
-  </div>
+  <div id="main"></div>
   <div class="actions" id="actions">
-    <button class="btn btn-dark">Next</button>
+    <button class="btn btn-dark">Start</button>
   </div>
   <!-- script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
@@ -31,28 +37,59 @@
 
     const lorem = ["Lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing", "elit.", "Donec", "quis", "nisl", "sed", "nisi", "vestibulum", "convallis.", "Praesent", "eget", "ex", "tempus,", "sodales", "nunc", "eu,", "vulputate", "metus.", "Phasellus", "ut", "feugiat", "nulla,", "at", "tincidunt", "neque."];
 
+    let state = {
+      story: 0, line: 1
+    };
+
     function get_sample_story(){
-      let html = '';
+      let sentences = [];
       for(var i=0; i<Math.random()*5; ++i) {
-        let p = '';
+        let text = '';
         for(var j=0; j<Math.random()*300; ++j) {
-          p += '<span>' + lorem[Math.floor(Math.random() * lorem.length)] + '</span> '
+          let word = lorem[Math.floor(Math.random() * lorem.length)];
+          text += word + ' ';
         }
-        html += '<p>' + p + '</p>';
+        sentences.push(text);
       }
-      return html;
+      return {
+        sentences: sentences
+      };
     }
 
-    function create_box_story(html) {
+    function create_box_story(story) {
+      state.story += 1;
       var el = document.createElement('div');
       el.className = 'container';
-      el.innerHTML = html;
+      el.style.display = 'none';
+      el.id = 's' + state.story;
+      el.setAttribute('lcount', story.sentences.length);
       main_container.appendChild(el);
+      for(var i=0; i < story.sentences.length; ++i) {
+        let p = document.createElement('p');
+        p.innerText = story.sentences[i];
+        p.id = 's' + state.story + '-l' + (i+1);
+        p.style.display = 'none';
+        el.appendChild(p);
+      }
     }
 
     function btn_action(evt){
       evt.preventDefault();
-      create_box_story(get_sample_story());
+      if (state.line == 1) {
+        $('#s' + state.story).show();
+      }
+      var el = $('#s' + state.story + '-l' + state.line);
+      el.show();
+      console.log(state, el);
+      if (state.line >= el.parent().attr('lcount')) {
+        state.story += 1;
+        state.line = 1;
+        evt.target.innerText = 'Next';
+        create_box_story(get_sample_story());
+      } else {
+        evt.target.innerText = 'Continue';
+        state.line += 1;
+      }
     }
 
     $('.btn').on('click', btn_action);
