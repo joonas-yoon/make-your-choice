@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <style>
+    .container {
+      background: #fafafa;
+      border-radius: 5px;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      padding: 1rem 2rem;
+    }
+    .actions {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="main">
+    <div class="container">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec bibendum dolor, quis feugiat enim.</p>
+      <p>Nulla molestie urna quis augue sodales, vel pharetra eros porttitor. Nulla ut urna vel felis posuere sodales. Fusce ac nulla rhoncus, maximus diam a, venenatis sapien. Donec a enim id nulla ultricies pharetra. Maecenas in neque sollicitudin, ultrices risus sit amet, consequat dui. Duis ut porta augue.</p>
+      <p>Curabitur nec lacus vitae lectus tristique sagittis eget non metus. Suspendisse pulvinar, nibh et aliquam fermentum, diam odio viverra lacus, at fringilla velit augue sit amet tortor.</p>
+    </div>
+  </div>
+  <div class="actions" id="actions">
+    <button class="btn btn-dark">Next</button>
+  </div>
+  <!-- script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.n5.2/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    const main_container = document.getElementById('main');
+    const action_container = document.getElementById('actions');
+
+    const lorem = ["Lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing", "elit.", "Donec", "quis", "nisl", "sed", "nisi", "vestibulum", "convallis.", "Praesent", "eget", "ex", "tempus,", "sodales", "nunc", "eu,", "vulputate", "metus.", "Phasellus", "ut", "feugiat", "nulla,", "at", "tincidunt", "neque."];
+
+    function create_box_story(html) {
+      var el = document.createElement('div');
+      el.className = 'container';
+      el.innerHTML = html;
+      main_container.appendChild(el);
+    }
+
+    function btn_action(evt){
+      evt.preventDefault();
+      let html = '';
+      for(var i=0; i<Math.random()*5; ++i) {
+        let p = '';
+        for(var j=0; j<Math.random()*300; ++j) {
+          p += lorem[Math.floor(Math.random() * lorem.length)] + ' '
+        }
+        html += '<p>' + p + '</p>';
+      }
+      create_box_story(html);
+    }
+
+    $('.btn').on('click', btn_action);
+  });
+  </script>
+</body>
+</html>
