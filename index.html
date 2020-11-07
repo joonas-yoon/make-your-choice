@@ -56,31 +56,20 @@
       story: 1, line: 1
     };
 
-    function get_sample_story(){
-      let sentences = [];
-      for(var i=0; i<Math.random()*5; ++i) {
-        let text = '';
-        for(var j=0; j<Math.random()*300; ++j) {
-          let word = lorem[Math.floor(Math.random() * lorem.length)];
-          text += word + ' ';
-        }
-        sentences.push(text);
-      }
-      return {
-        sentences: sentences
-      };
+    function get_sample_story(callback){
+      $.getJSON('./1.json', callback);
     }
 
-    function create_box_story(story) {
+    function create_box_story(stories) {
       var el = document.createElement('div');
       el.className = 'container';
       el.style.display = 'none';
       el.id = 's' + state.story;
-      el.setAttribute('lcount', story.sentences.length);
+      el.setAttribute('lcount', stories.sentences.length);
       main_container.appendChild(el);
-      for(var i=0; i < story.sentences.length; ++i) {
+      for(var i=0; i < stories.sentences.length; ++i) {
         let p = document.createElement('p');
-        p.innerText = story.sentences[i];
+        p.innerText = stories.sentences[i];
         p.id = 's' + state.story + '-l' + (i+1);
         p.style.display = 'none';
         el.appendChild(p);
@@ -101,7 +90,9 @@
         state.story += 1;
         state.line = 1;
         evt.target.innerText = 'Next';
-        create_box_story(get_sample_story());
+        get_sample_story(function(data) {
+          create_box_story(data.stories[state.story]);
+        });
       } else {
         evt.target.innerText = 'Continue';
         state.line += 1;
@@ -110,9 +101,10 @@
     }
 
     $('.btn').on('click', btn_action);
-    
-    // Initial
-    create_box_story(get_sample_story());
+
+    get_sample_story(function(data) {
+      create_box_story(data.stories[state.story]);
+    });
   });
   </script>
 </body>

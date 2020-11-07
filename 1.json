@@ -1,0 +1,140 @@
+{
+    "stories": {
+        "1": {
+            "sentences": [
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut imperdiet dui sollicitudin massa mollis scelerisque sed quis felis.",
+                "Fusce placerat interdum tortor sed iaculis. Nunc ac pellentesque est, nec aliquet ex.",
+                "In commodo, nibh at aliquet ornare, sapien ipsum lacinia dui, in commodo eros dolor ac lectus.",
+                "Sed et finibus lacus. Donec non dapibus nisi. Nam ac turpis dui. Nulla at mauris vestibulum, congue purus vel, luctus mi."
+            ],
+            "next": 2
+        },
+        "2": {
+            "sentences": [
+                "Fusce ullamcorper vitae purus id vestibulum. Ut a arcu ante. Donec eu urna nec sem molestie volutpat interdum ullamcorper lorem.",
+                "Nulla facilisi. Donec pulvinar quis nisi ac varius. Nam ut tellus massa. Praesent mollis at nisi sed aliquam.",
+                "Cras sagittis eros enim, nec sagittis arcu lobortis sed."
+            ],
+            "next": 3
+        },
+        "3": {
+            "sentences": [
+                "Cras in auctor ex. Quisque cursus massa lorem, a consequat magna bibendum a.",
+                "Etiam ultricies nunc eget felis dictum, sed bibendum ligula congue.",
+                "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+                "Maecenas efficitur nibh scelerisque velit molestie tincidunt. Sed mattis nunc vel dui pretium imperdiet.",
+                "Cras id tellus sed sapien malesuada fringilla sed eget lacus. Vestibulum egestas elit justo, in iaculis urna varius eget.",
+                "Etiam mollis ipsum ante, non placerat erat gravida eget."
+            ],
+            "next": 4
+        },
+        "4": {
+            "sentences": [
+                "Integer interdum vehicula turpis sed aliquam. Vivamus vel lacus ullamcorper, sollicitudin nisi id, euismod enim.",
+                "Maecenas arcu enim, mattis et neque at, gravida maximus risus. Donec tincidunt nisl quis iaculis porttitor."
+            ],
+            "next": 5
+        },
+        "5": {
+            "sentences": [
+                "Vestibulum pretium consectetur commodo. Sed consequat risus quis orci imperdiet ultricies.",
+                "Integer rutrum iaculis ante ut convallis."
+            ],
+            "next": 6
+        },
+        "6": {
+            "sentences": [
+                "Nullam malesuada felis et mi ultrices, vitae semper erat sodales.",
+                "Duis id tortor sed enim dapibus auctor.",
+                "Nam quis interdum ante.",
+                "Praesent euismod arcu ipsum, nec venenatis enim placerat in."
+            ],
+            "next": 7
+        },
+        "7": {
+            "sentences": [
+                "Praesent placerat, erat sit amet auctor dignissim, est ante sollicitudin enim, vel pretium libero leo ut augue.",
+                "Aliquam erat volutpat. Nulla ante nisi, ultricies non justo quis, auctor ullamcorper tortor.",
+                "Donec risus mi, pretium sed consectetur ut, pulvinar eu felis. Nam id elementum ipsum.",
+                "Suspendisse tellus purus, luctus id mi ut, blandit imperdiet enim.",
+                "Mauris porttitor placerat pharetra."
+            ],
+            "next": 8
+        },
+        "8": {
+            "sentences": [
+                "Suspendisse auctor in nisi vel tincidunt. ",
+                "Donec scelerisque quam in tortor consectetur, in imperdiet est aliquet. ",
+                "Fusce sit amet nisi in lectus semper dignissim ut eget lectus. Curabitur laoreet efficitur tempor. ",
+                "Aliquam tempor vulputate rhoncus. Morbi feugiat augue consequat urna malesuada, et vulputate turpis porttitor. "
+            ],
+            "next": 9
+        },
+        "9": {
+            "sentences": [
+                "Aenean fringilla eros sit amet urna pretium, ut volutpat mauris pharetra. Sed vel nulla ex.",
+                "Nam pellentesque semper quam. Vestibulum eget tristique lectus. "
+            ],
+            "next": 10
+        },
+        "10": {
+            "sentences": [
+                "Phasellus nec blandit elit. Proin porttitor vulputate nulla, vitae gravida lectus luctus in. ",
+                "Maecenas congue sagittis velit non pellentesque. In non tristique elit, in lacinia nunc. ",
+                "Fusce fermentum sapien non nibh porta laoreet. Ut rhoncus elit ipsum, nec varius metus placerat id. "
+            ],
+            "next": 11
+        },
+        "11": {
+            "sentences": [
+                "Nam velit lorem, iaculis sed porta non, rutrum ut ipsum. Aliquam erat volutpat. ",
+                "Etiam et nibh vitae nisi malesuada luctus in ac eros. ",
+                "Vivamus felis orci, posuere non tellus vel, congue dignissim nisl. "
+            ],
+            "next": 12
+        },
+        "12": {
+            "sentences": [
+                "Praesent iaculis placerat neque vel efficitur.",
+                "Vivamus maximus, nisl a ullamcorper lacinia, quam felis dignissim libero, eu volutpat orci magna eget nulla. "
+            ],
+            "next": 13
+        },
+        "13": {
+            "sentences": [
+                "Morbi sed fringilla odio. Aliquam justo felis, scelerisque quis aliquet eget, egestas vitae diam. Morbi congue ullamcorper purus. ",
+                "Etiam eu feugiat odio. Sed nulla tortor, elementum non diam ut, pharetra sollicitudin eros. "
+            ],
+            "next": 14
+        },
+        "14": {
+            "sentences": [
+                "Maecenas sed ex euismod, luctus ante vehicula, mattis lacus. ",
+                "Sed vel libero auctor, hendrerit nisi quis, sollicitudin libero. ",
+                "Praesent justo est, vestibulum id ultrices faucibus, molestie a neque. "
+            ],
+            "next": 15
+        },
+        "15": {
+            "sentences": [
+                "Ut vehicula nisl sed nunc suscipit, nec laoreet ligula sagittis."
+            ],
+            "next": 16
+        },
+        "16": {
+            "sentences": [
+                "Etiam nulla lorem, tincidunt eu massa aliquet, elementum pulvinar nulla.",
+                "Maecenas pretium lobortis tellus id lobortis.",
+                "Praesent justo est, vestibulum id ultrices faucibus, molestie a neque.",
+                "Ut vehicula nisl sed nunc suscipit, nec laoreet ligula sagittis."
+            ],
+            "next": 17
+        },
+        "17": {
+            "sentences": [
+                "The end - 1"
+            ],
+            "end": true
+        }
+    }
+}
