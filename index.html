@@ -2,110 +2,17 @@
 <html>
 <head>
   <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-  <style>
-    #main {
-      padding-top: 1rem;
-    }
-    #actions {
-      padding-bottom: 1rem;
-    }
-
-    .container {
-      background: #fafafa;
-      border-radius: 5px;
-      margin-top: 2rem;
-      margin-bottom: 2rem;
-      padding: 1rem 2rem;
-      opacity: 0.0;
-      transition: opacity 0.75s;
-    }
-    
-    .container.history {
-      opacity: 0.5;
-    }
-    .container.history:hover {
-      opacity: 1.0;
-    }
-
-    .container.active {
-      opacity: 1.0;
-      box-shadow: 0 0 6px rgba(0, 0, 0, .3);
-    }
-
-    .actions {
-      text-align: center;
-    }
-  </style>
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
   <div id="main"></div>
   <div class="actions" id="actions">
-    <button class="btn btn-dark">Start</button>
+    <button class="btn btn-dark" id="btn_action">Start</button>
   </div>
   <!-- script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.n5.2/js/bootstrap.min.js"></script>
-  <script type="text/javascript">
-  $(document).ready(function(){
-    const main_container = document.getElementById('main');
-    const action_container = document.getElementById('actions');
-
-    const lorem = ["Lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing", "elit.", "Donec", "quis", "nisl", "sed", "nisi", "vestibulum", "convallis.", "Praesent", "eget", "ex", "tempus,", "sodales", "nunc", "eu,", "vulputate", "metus.", "Phasellus", "ut", "feugiat", "nulla,", "at", "tincidunt", "neque."];
-
-    let state = {
-      story: 1, line: 1
-    };
-
-    function get_sample_story(callback){
-      $.getJSON('./1.json', callback);
-    }
-
-    function create_box_story(stories) {
-      var el = document.createElement('div');
-      el.className = 'container';
-      el.style.display = 'none';
-      el.id = 's' + state.story;
-      el.setAttribute('lcount', stories.sentences.length);
-      main_container.appendChild(el);
-      for(var i=0; i < stories.sentences.length; ++i) {
-        let p = document.createElement('p');
-        p.innerText = stories.sentences[i];
-        p.id = 's' + state.story + '-l' + (i+1);
-        p.style.display = 'none';
-        el.appendChild(p);
-      }
-    }
-
-    function btn_action(evt){
-      evt.preventDefault();
-      if (state.line == 1) {
-        if (state.story > 1) {
-          $('#s' + (state.story - 1)).addClass('history').removeClass('active');
-        }
-        $('#s' + state.story).show().addClass('active');
-      }
-      var el = $('#s' + state.story + '-l' + state.line);
-      el.fadeIn();
-      if (state.line >= el.parent().attr('lcount')) {
-        state.story += 1;
-        state.line = 1;
-        evt.target.innerText = 'Next';
-        get_sample_story(function(data) {
-          create_box_story(data.stories[state.story]);
-        });
-      } else {
-        evt.target.innerText = 'Continue';
-        state.line += 1;
-      }
-      evt.target.scrollIntoView();
-    }
-
-    $('.btn').on('click', btn_action);
-
-    get_sample_story(function(data) {
-      create_box_story(data.stories[state.story]);
-    });
-  });
-  </script>
+  <script type="text/javascript" src="./script.js"></script>
 </body>
 </html>
