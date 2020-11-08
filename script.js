@@ -1,11 +1,28 @@
 $(document).ready(function(){
   const main_container = document.getElementById('main');
 
+  let button = {
+    /* variables */
+    $el: undefined,
+    /* functions */
+    setElement: function(el) {
+      this.$el = el;
+      return this.$el;
+    },
+    setText: function(text) {
+      this.$el.text(text);
+    },
+    enable: function(boolean) {
+      if (boolean) this.$el.removeAttr('disabled');
+      else this.$el.attr('disabled', 1);
+    }
+  };
+
   let paginator = {
     /* variables */
     currentPage: undefined,
     currentLine: undefined,
-    maxLine: undefined,
+    lastLine: undefined,
     link: undefined,
     /* functions */
     showNextPage: function() {
@@ -17,35 +34,42 @@ $(document).ready(function(){
     showNextLine: function() {
       this.currentLine += 1;
       var $line = $('#p' + this.currentPage + '-' + this.currentLine);
-      if ($line.hasClass('choice')) $line.css('display', 'flex').hide().fadeIn();
-      else $line.fadeIn();
-      console.log('nextLine', this);
+      if ($line.hasClass('choice')) {
+        $line.css('display', 'flex').hide().fadeIn();
+        button.enable(false);
+        button.setText('Select');
+      }
+      else {
+        button.enable(true);
+        button.setText(this.currentLine == this.lastLine ? 'Next' : 'Continue');
+        $line.fadeIn();
+      }
     },
     isAllRead: function() {
-      return (this.currentLine || 0) >= (this.maxLine || 0);
+      return (this.currentLine || 0) >= (this.lastLine || 0);
     },
     showPage: function(page) {
       this.currentPage = page;
       this.currentLine = 1;
-      console.log('showPage', this);
       setTimeout(function(){
         $('#p' + page).addClass('active');
         $('#p' + page).fadeIn();
         $('#p' + page + '-1').fadeIn();
+        button.enable(true);
+        button.setText('Continue');
       }, 10);
     },
     createPage: function(page) {
       getSampleStory(page, function(data) {
         // Get and Set next link
         paginator.link = data.next;
-        paginator.maxLine = data.sentences.length || 0;
+        paginator.lastLine = data.sentences.length || 0;
 
         // Create html element
         var el = document.createElement('div');
         el.className = 'container';
         el.style.display = 'none';
         el.id = 'p' + page;
-        el.setAttribute('lcount', data.sentences.length);
 
         for (var i=0; i < data.sentences.length; ++i) {
           let p = document.createElement('p');
@@ -56,7 +80,7 @@ $(document).ready(function(){
         }
 
         if (!!data.choice) {
-          paginator.maxLine += 1;
+          paginator.lastLine += 1;
           el.setAttribute('choice', true);
           var choiceBox = createChoiceBox(data.choice);
           choiceBox.id = 'p' + page + '-' + (data.sentences.length+1);
@@ -74,7 +98,7 @@ $(document).ready(function(){
     paginator.showPage(1);
   }, 100);
 
-  $('#btn_action').on('click', function(evt) {
+  button.setElement($('#btn_action')).on('click', function(evt) {
     evt.preventDefault();
     console.log(paginator);
     if (paginator.isAllRead()) {
