@@ -28,10 +28,15 @@ $(document).ready(function(){
     showNextPage: function() {
       $('#p' + this.currentPage).removeClass('active');
       $('#p' + this.currentPage).addClass('history');
-      var self = this;
-      this.createPage(this.link, function(el){
-        self.showPage(el);
-      });
+      if (this.link === 'end') {
+        button.enable(false);
+        button.setText('- The End -');
+      } else {
+        var self = this;
+        this.createPage(this.link, function(el){
+          self.showPage(el);
+        });
+      }
     },
     showNextLine: function() {
       this.currentLine += 1;
@@ -64,6 +69,9 @@ $(document).ready(function(){
         // Get and Set next link
         paginator.link = data.next;
         paginator.lastLine = data.sentences.length || 0;
+        if (data.end) {
+          paginator.link = 'end';
+        }
 
         // Create html element
         var el = document.createElement('div');
@@ -102,8 +110,8 @@ $(document).ready(function(){
       success: function(data) {
         callback(data.stories[id]);
       },
-      error: console.error,
-      complete: console.log
+      // complete: console.log,
+      error: console.error
     });
   }
 
@@ -115,7 +123,7 @@ $(document).ready(function(){
     button.enable(true);
     button.setText(el.innerText);
     $(el.parentNode.parentNode).find('.item').removeClass('active');
-    setTimeout(function(){ el.classList.add('active'); }, 0);
+    el.classList.add('active');
   }
 
   function createChoiceBox(choice) {
