@@ -83,7 +83,7 @@ $(document).ready(function(){
           paginator.lastLine += 1;
           el.setAttribute('choice', true);
           var choiceBox = createChoiceBox(data.choice);
-          choiceBox.id = 'p' + page + '-' + (data.sentences.length+1);
+          choiceBox.id = 'p' + page + '-' + paginator.lastLine;
           el.appendChild(choiceBox);
         }
 
@@ -100,7 +100,6 @@ $(document).ready(function(){
 
   button.setElement($('#btn_action')).on('click', function(evt) {
     evt.preventDefault();
-    console.log(paginator);
     if (paginator.isAllRead()) {
       paginator.showNextPage();
     } else {
@@ -109,9 +108,25 @@ $(document).ready(function(){
   });
 
   function getSampleStory(id, callback){
-    $.getJSON('./1.json', function(data) {
-      callback(data.stories[id]);
+    $.ajax({
+      url: './1.json',
+      cache: false,
+      dataType: 'json',
+      success: function(data) {
+        callback(data.stories[id]);
+      }
     });
+  }
+
+  function selectChoiceEvent(evt) {
+    evt.preventDefault();
+    var el = evt.target;
+    var next = el.getAttribute('next');
+    paginator.link = next;
+    button.enable(true);
+    button.setText(el.innerText);
+    $(el.parentNode.parentNode).find('.item').removeClass('active');
+    setTimeout(function(){ el.classList.add('active'); }, 0);
   }
 
   function createChoiceBox(choice) {
@@ -123,7 +138,9 @@ $(document).ready(function(){
       let item = document.createElement('div');
       item.className = 'item';
       item.innerText = choice[i].title;
-      col.append(item);
+      item.setAttribute('next', choice[i].next);
+      item.addEventListener('click', selectChoiceEvent);
+      col.appendChild(item);
       row.appendChild(col);
     }
     return row;
