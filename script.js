@@ -28,8 +28,10 @@ $(document).ready(function(){
     showNextPage: function() {
       $('#p' + this.currentPage).removeClass('active');
       $('#p' + this.currentPage).addClass('history');
-      this.createPage(this.link);
-      this.showPage(this.link);
+      var self = this;
+      this.createPage(this.link, function(el){
+        self.showPage(el);
+      });
     },
     showNextLine: function() {
       this.currentLine += 1;
@@ -48,18 +50,16 @@ $(document).ready(function(){
     isAllRead: function() {
       return (this.currentLine || 0) >= (this.lastLine || 0);
     },
-    showPage: function(page) {
-      this.currentPage = page;
+    showPage: function(el) {
+      var $el = $(el);
+      this.currentPage = $el.attr('id').substr(1);
       this.currentLine = 1;
-      setTimeout(function(){
-        $('#p' + page).addClass('active');
-        $('#p' + page).fadeIn();
-        $('#p' + page + '-1').fadeIn();
-        button.enable(true);
-        button.setText('Continue');
-      }, 10);
+      $el.addClass('active').fadeIn();
+      $($el.children()[0]).fadeIn();
+      button.enable(true);
+      button.setText('Continue');
     },
-    createPage: function(page) {
+    createPage: function(page, callback) {
       getSampleStory(page, function(data) {
         // Get and Set next link
         paginator.link = data.next;
@@ -68,7 +68,6 @@ $(document).ready(function(){
         // Create html element
         var el = document.createElement('div');
         el.className = 'container';
-        el.style.display = 'none';
         el.id = 'p' + page;
 
         for (var i=0; i < data.sentences.length; ++i) {
@@ -88,33 +87,23 @@ $(document).ready(function(){
         }
 
         main_container.appendChild(el);
+
+        callback(el);
       });
     }
   };
-  
-  // After load
-  setTimeout(function(){
-    paginator.createPage(1);
-    paginator.showPage(1);
-  }, 100);
-
-  button.setElement($('#btn_action')).on('click', function(evt) {
-    evt.preventDefault();
-    if (paginator.isAllRead()) {
-      paginator.showNextPage();
-    } else {
-      paginator.showNextLine();
-    }
-  });
 
   function getSampleStory(id, callback){
     $.ajax({
       url: './1.json',
       cache: false,
       dataType: 'json',
+      async: false,
       success: function(data) {
         callback(data.stories[id]);
-      }
+      },
+      error: console.error,
+      complete: console.log
     });
   }
 
@@ -145,4 +134,18 @@ $(document).ready(function(){
     }
     return row;
   }
+
+  button.setElement($('#btn_action')).on('click', function(evt) {
+    evt.preventDefault();
+    if (paginator.isAllRead()) {
+      paginator.showNextPage();
+    } else {
+      paginator.showNextLine();
+    }
+  });
+  
+  // After load
+  paginator.createPage(1, function(el){
+    paginator.showPage(el);
+  });
 });
