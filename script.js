@@ -1,40 +1,96 @@
 $(document).ready(function(){
   const main_container = document.getElementById('main');
-  const action_container = document.getElementById('actions');
-  const $button = $("#btn_action");
 
-  let state = {
-    story: 1, line: 1, history: [1], prev_story: {}
+  let paginator = {
+    /* variables */
+    currentPage: undefined,
+    currentLine: undefined,
+    maxLine: undefined,
+    link: undefined,
+    /* functions */
+    showNextPage: function() {
+      $('#p' + this.currentPage).removeClass('active');
+      $('#p' + this.currentPage).addClass('history');
+      this.createPage(this.link);
+      this.showPage(this.link);
+    },
+    showNextLine: function() {
+      this.currentLine += 1;
+      var $line = $('#p' + this.currentPage + '-' + this.currentLine);
+      if ($line.hasClass('choice')) $line.css('display', 'flex').hide().fadeIn();
+      else $line.fadeIn();
+      console.log('nextLine', this);
+    },
+    isAllRead: function() {
+      return (this.currentLine || 0) >= (this.maxLine || 0);
+    },
+    showPage: function(page) {
+      this.currentPage = page;
+      this.currentLine = 1;
+      console.log('showPage', this);
+      setTimeout(function(){
+        $('#p' + page).addClass('active');
+        $('#p' + page).fadeIn();
+        $('#p' + page + '-1').fadeIn();
+      }, 10);
+    },
+    createPage: function(page) {
+      getSampleStory(page, function(data) {
+        // Get and Set next link
+        paginator.link = data.next;
+        paginator.maxLine = data.sentences.length || 0;
+
+        // Create html element
+        var el = document.createElement('div');
+        el.className = 'container';
+        el.style.display = 'none';
+        el.id = 'p' + page;
+        el.setAttribute('lcount', data.sentences.length);
+
+        for (var i=0; i < data.sentences.length; ++i) {
+          let p = document.createElement('p');
+          p.innerText = data.sentences[i];
+          p.id = 'p' + page + '-' + (i+1);
+          p.style.display = 'none';
+          el.appendChild(p);
+        }
+
+        if (!!data.choice) {
+          paginator.maxLine += 1;
+          el.setAttribute('choice', true);
+          var choiceBox = createChoiceBox(data.choice);
+          choiceBox.id = 'p' + page + '-' + (data.sentences.length+1);
+          el.appendChild(choiceBox);
+        }
+
+        main_container.appendChild(el);
+      });
+    }
   };
+  
+  // After load
+  setTimeout(function(){
+    paginator.createPage(1);
+    paginator.showPage(1);
+  }, 100);
 
-  function get_sample_story(id, callback){
+  $('#btn_action').on('click', function(evt) {
+    evt.preventDefault();
+    console.log(paginator);
+    if (paginator.isAllRead()) {
+      paginator.showNextPage();
+    } else {
+      paginator.showNextLine();
+    }
+  });
+
+  function getSampleStory(id, callback){
     $.getJSON('./1.json', function(data) {
-      callback(data.stories[id])
+      callback(data.stories[id]);
     });
   }
 
-  function create_box_story(story) {
-    var el = document.createElement('div');
-    el.className = 'container';
-    el.style.display = 'none';
-    el.id = 's' + state.story;
-    el.setAttribute('lcount', story.sentences.length);
-    main_container.appendChild(el);
-    for (var i=0; i < story.sentences.length; ++i) {
-      let p = document.createElement('p');
-      p.innerText = story.sentences[i];
-      p.id = 's' + state.story + '-l' + (i+1);
-      p.style.display = 'none';
-      el.appendChild(p);
-    }
-
-    if (!!story.choice) {
-      el.setAttribute('choice', true);
-      el.appendChild(create_choice(story.choice));
-    }
-  }
-
-  function create_choice(choice) {
+  function createChoiceBox(choice) {
     var row = document.createElement('div');
     row.className = 'row choice';
     for (var i=0; i < choice.length; ++i) {
@@ -48,38 +104,4 @@ $(document).ready(function(){
     }
     return row;
   }
-
-  function button_click_event(evt){
-    evt.preventDefault();
-    if (state.line == 1) {
-      $('#s' + (state.history[state.history.length - 1])).addClass('history').removeClass('active');
-      $('#s' + state.story).show().addClass('active');
-    }
-    var $el = $('#s' + state.story + '-l' + state.line);
-    $el.fadeIn();
-    var is_read_all = state.line >= $el.parent().attr('lcount');
-    if (is_read_all) {
-      evt.target.innerText = 'Next';
-      state.story = prev_story.next;
-      state.line = 1;
-      state.history.push(prev_story.next);
-      get_sample_story(prev_story.next, function(data) {
-        console.log(prev_story.next, data);
-        prev_story = data;
-        create_box_story(data);
-      });
-    } else {
-      console.log(document.getElementById('s' + state.story));
-      evt.target.innerText = 'Continue';
-      state.line += 1;
-    }
-    evt.target.scrollIntoView();
-  }
-
-  get_sample_story(state.story, function(data) {
-    prev_story = data;
-    create_box_story(data);
-  });
-
-  $button.on('click', button_click_event);
 });

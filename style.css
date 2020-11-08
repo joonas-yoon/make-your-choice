@@ -52,6 +52,10 @@
     opacity: 0.5;
   }
 
+  .choice {
+    display: none;
+  }
+
   .choice .item.active {
     background-color: #fff;
     color: #000;
