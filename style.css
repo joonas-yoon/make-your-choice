@@ -1,6 +1,9 @@
+body {
+  padding: 0.5rem 0;
+}
 
 #main {
-  padding-top: 1rem;
+  padding: 1rem 0;
 }
 
 #actions {
@@ -9,9 +12,8 @@
 
 .container {
   background: #fafafa;
-  border-radius: 5px;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  border-radius: 0;
+  margin: 1rem auto;
   padding: 1rem 2rem;
   opacity: 0.0;
   -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -35,7 +37,7 @@
     opacity: 1.0;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
-    box-shadow: 0 0 6px rgba(0, 0, 0, .3);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, .3);
   }
 
 .choice .item {
@@ -81,4 +83,10 @@
 
 .actions {
   text-align: center;
+}
+
+@media (min-width: 576px) {
+  .container {
+    border-radius: 0.2rem;
+  }
 }
