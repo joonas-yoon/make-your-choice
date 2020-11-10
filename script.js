@@ -14,6 +14,15 @@ $(document).ready(function(){
         if (this.items[keys[i]] < condition[keys[i]]) return false;
       }
       return true;
+    },
+    saveItems: function(newItems) {
+      newItems = newItems || {};
+      var keys = Object.keys(newItems);
+      for (let i=0; i < keys.length; ++i) {
+        let name = keys[i];
+        let value = this.items[name];
+        this.items[name] = (value || 0) + Math.floor(newItems[name]);
+      }
     }
   };
 
@@ -40,6 +49,7 @@ $(document).ready(function(){
     currentLine: undefined,
     lastLine: undefined,
     link: undefined,
+    metadata: undefined,
     /* functions */
     showNextPage: function() {
       $('#p' + this.currentPage).removeClass('active');
@@ -47,6 +57,12 @@ $(document).ready(function(){
       $('.history .item').each(function(idx, item) {
         item.removeEventListener('click', selectChoiceEvent);
       });
+
+      if (this.metadata) {
+        player.saveItems(this.metadata.get);
+        this.metadata = undefined;
+      }
+
       if (this.link === 'end') {
         button.enable(false);
         button.setText('- The End -');
@@ -111,6 +127,8 @@ $(document).ready(function(){
           var choiceBox = createChoiceBox(data.choice);
           choiceBox.id = 'p' + page + '-' + paginator.lastLine;
           el.appendChild(choiceBox);
+        } else {
+          paginator.metadata = data;
         }
 
         main_container.appendChild(el);
@@ -140,6 +158,7 @@ $(document).ready(function(){
     var next = el.getAttribute('next');
     $(el.parentNode.parentNode).find('.item').removeClass('active');
     paginator.link = next;
+    paginator.metadata = evt.target.meta;
     button.enable(true);
     button.setText(el.innerText);
     el.classList.add('active');
