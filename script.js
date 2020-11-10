@@ -1,6 +1,22 @@
 $(document).ready(function(){
   const main_container = document.getElementById('main');
 
+  let player = {
+    /* variables */
+    items : {},
+    /* functions */
+    hasCondition: function(condition) {
+      // player.items has all items on condition?
+      condition = condition || {};
+      let keys = Object.keys(condition);
+      for (let i=0; i < keys.length; ++i){
+        if (this.items[keys[i]] === undefined) return false;
+        if (this.items[keys[i]] < condition[keys[i]]) return false;
+      }
+      return true;
+    }
+  };
+
   let button = {
     /* variables */
     $el: undefined,
@@ -133,6 +149,7 @@ $(document).ready(function(){
     var row = document.createElement('div');
     row.className = 'row choice';
     for (var i=0; i < choice.length; ++i) {
+      if (!player.hasCondition(choice[i].condition)) continue;
       let col = document.createElement('div');
       col.className = 'col-12 col-sm-6';
       let item = document.createElement('div');
@@ -140,6 +157,10 @@ $(document).ready(function(){
       item.innerText = choice[i].title;
       item.setAttribute('next', choice[i].next);
       item.addEventListener('click', selectChoiceEvent);
+      item.meta = {
+        get: choice[i].get || {},
+        condition: choice[i].condition || {}
+      };
       col.appendChild(item);
       row.appendChild(col);
     }

@@ -7,7 +7,11 @@
                 "In commodo, nibh at aliquet ornare, sapien ipsum lacinia dui, in commodo eros dolor ac lectus.",
                 "Sed et finibus lacus. Donec non dapibus nisi. Nam ac turpis dui. Nulla at mauris vestibulum, congue purus vel, luctus mi."
             ],
-            "next": 2
+            "next": 2,
+            "get": {
+                "item1": 1,
+                "item2": 2
+            }
         },
         "2": {
             "sentences": [
@@ -22,11 +26,21 @@
                 },
                 {
                     "title": "Go to 4",
-                    "next": 4
+                    "next": 4,
+                    "get": {
+                        "item3": 3
+                    }
                 },
                 {
                     "title": "Go to 5",
                     "next": 5
+                },
+                {
+                    "title": "Go to 17",
+                    "next": 17,
+                    "condition": {
+                        "item2": 2
+                    }
                 }
             ]
         },
