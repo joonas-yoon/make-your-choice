@@ -28,6 +28,9 @@ $(document).ready(function(){
     showNextPage: function() {
       $('#p' + this.currentPage).removeClass('active');
       $('#p' + this.currentPage).addClass('history');
+      $('.history .item').each(function(idx, item) {
+        item.removeEventListener('click', selectChoiceEvent);
+      });
       if (this.link === 'end') {
         button.enable(false);
         button.setText('- The End -');
@@ -119,10 +122,10 @@ $(document).ready(function(){
     evt.preventDefault();
     var el = evt.target;
     var next = el.getAttribute('next');
+    $(el.parentNode.parentNode).find('.item').removeClass('active');
     paginator.link = next;
     button.enable(true);
     button.setText(el.innerText);
-    $(el.parentNode.parentNode).find('.item').removeClass('active');
     el.classList.add('active');
   }
 

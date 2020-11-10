@@ -62,6 +62,12 @@
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
   }
+  
+  .container.container.history .choice .item.active {
+    color: #1a1a1a;
+    border-color: #1a1a1a;
+    background-color: #ededed;
+  }
 
   .choice {
     display: none;
