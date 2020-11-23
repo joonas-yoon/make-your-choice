@@ -1,0 +1,99 @@
+<!DOCTYPE html>  <!-- HTML5 document type -->
+<html>
+<head>
+  <!-- use go-debug.js when developing and go.js when deploying -->
+  <script src="GoJS/release/go-debug.js"></script>
+  <script src="GoJS/extensions/Figures.js"></script>
+</head>
+<body>
+    <!-- The DIV for a Diagram needs an explicit size or else we will not see anything.
+     In this case we also add a background color so we can see that area. -->
+    <div id="myDiagramDiv" style="width:100%; height:600px; background-color: #DAE4E4;"></div>
+</body>
+<script type="text/javascript">
+
+var $ = go.GraphObject.make;
+var myDiagram =
+  $(go.Diagram, "myDiagramDiv",
+    {
+      "undoManager.isEnabled": true,
+      layout: $(go.LayeredDigraphLayout, // specify a Diagram.layout that arranges trees
+                { direction: 0, layerSpacing: 100, columnSpacing: 25, setsPortSpots: false })
+    });
+
+// the template we defined earlier
+myDiagram.nodeTemplate =
+  $(go.Node, "Auto",
+    {
+      isShadowed: true, shadowBlur: 1,
+      shadowOffset: new go.Point(0, 1),
+      shadowColor: "rgba(0, 0, 0, .14)",
+      fromSpot: go.Spot.RightSide,
+      toSpot: go.Spot.LeftSide,
+      
+      portId: "",
+      cursor: "pointer",
+      fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
+      toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
+    },
+    
+    $(go.Shape,
+      "RoundedRectangle", // string argument can name a predefined figure
+      { fill: "#44ccff", stroke: null }),
+
+    $(go.TextBlock, "Default Text",
+      { margin: 12, stroke: "white", font: "bold 16px sans-serif" },
+      new go.Binding("text", "name"))
+  );
+
+myDiagram.linkTemplate =
+$(go.Link,
+  // default routing is go.Link.Normal
+  // default corner is 0
+  {
+    routing: go.Link.AvoidsNodes,
+    corner: 10,
+    adjusting: go.Link.Stretch,
+    reshapable: true,
+    relinkableFrom: true,
+    relinkableTo: true
+  },
+
+  // the link path, a Shape
+  $(go.Shape),
+
+  // if we wanted an arrowhead we would also add another Shape with toArrow defined:
+  $(go.Shape, { toArrow: "Standard", stroke: null }),
+  
+  $(go.TextBlock, { segmentIndex: 0, segmentOffset: new go.Point(NaN, NaN), segmentOrientation: go.Link.OrientUpright, margin: 3 },
+    new go.Binding("text", "text")),
+
+  $("Button",
+    { segmentOffset: new go.Point(0, 0), alignment: go.Spot.Center, click: console.log },
+    $(go.Shape, "AsteriskLine", { width: 6, height: 6 }))
+);
+
+var model = $(go.GraphLinksModel);
+model.nodeDataArray =
+[
+  { key: "1", name: "Don Meow" },
+  { key: "2", name: "Demeter" },
+  { key: "3", name: "Copricat" },
+  { key: "4", name: "Jellylorum" },
+  { key: "5", name: "Alonzo" },
+  { key: "6", name: "Munkustrap" }
+];
+model.linkDataArray =
+[
+  { from: "1", to: "2", text: "1 to 2" },
+  { from: "1", to: "3", text: "1 to 3" },
+  { from: "2", to: "4", text: "2 to 4" },
+  { from: "3", to: "5", text: "3 to 5" },
+  { from: "3", to: "6", text: "3 to 6" },
+  { from: "4", to: "2", text: "circuit" },
+  { from: "4", to: "2", text: "another" }
+];
+myDiagram.model = model;
+
+</script>
+</html>
