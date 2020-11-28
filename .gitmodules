@@ -1,5 +1,5 @@
-[submodule "GoJS"]
-	path = GoJS
+[submodule "assets/gojs"]
+	path = assets/gojs
 	url = https://github.com/NorthwoodsSoftware/GoJS
 [submodule "assets/font-awesome"]
 	path = assets/font-awesome
