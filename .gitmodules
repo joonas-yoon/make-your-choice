@@ -1,3 +1,6 @@
 [submodule "GoJS"]
 	path = GoJS
 	url = https://github.com/NorthwoodsSoftware/GoJS
+[submodule "assets/font-awesome"]
+	path = assets/font-awesome
+	url = https://github.com/FortAwesome/Font-Awesome
