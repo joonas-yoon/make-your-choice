@@ -87,7 +87,7 @@ viewDiagram.nodeTemplate =
       new go.Binding("fill", "backgroundColor")),
 
     _(go.TextBlock, "Default Text",
-      { margin: 12, stroke: "black", font: "bold 16px sans-serif" },
+      { margin: 12, stroke: "black", font: "normal 16px sans-serif", textAlign: "center", verticalAlignment: go.Spot.Center },
       new go.Binding("text", "name"),
       new go.Binding("stroke", "textColor"))
   );
@@ -161,7 +161,12 @@ $.ajax({
     var nodes = [];
     var links = [];
     for(var i = 0; i < ids.length; ++i) {
-      nodes.push({ key: ids[i], name: '#' + ids[i] });
+      var node = { key: ids[i], name: '#' + ids[i] };
+      if (data.start == ids[i]) {
+        node.backgroundColor = '#1e90ff';
+        node.textColor = '#ffffff';
+      }
+      nodes.push(node);
     }
     for(var i = 0; i < ids.length; ++i) {
       var page = stories[ids[i]];
