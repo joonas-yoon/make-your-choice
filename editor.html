@@ -51,8 +51,8 @@ var viewDiagram =
     {
       "grid.visible": true,
       "undoManager.isEnabled": true,
-      layout: $(go.LayeredDigraphLayout, // specify a Diagram.layout that arranges trees
-                { direction: 0, layerSpacing: 100, columnSpacing: 25, setsPortSpots: false })
+      layout: _(go.LayeredDigraphLayout, // specify a Diagram.layout that arranges trees
+                { direction: 90, layerSpacing: 25, columnSpacing: 100, setsPortSpots: false })
     });
 
 // the definition of the grid system
@@ -72,8 +72,8 @@ viewDiagram.nodeTemplate =
       isShadowed: true, shadowBlur: 1,
       shadowOffset: new go.Point(0, 1),
       shadowColor: "rgba(255, 255, 255, .2)",
-      fromSpot: go.Spot.RightSide,
-      toSpot: go.Spot.LeftSide,
+      fromSpot: go.Spot.BottomSide,
+      toSpot: go.Spot.TopSide,
       
       portId: "",
       cursor: "pointer",
@@ -84,10 +84,12 @@ viewDiagram.nodeTemplate =
     _(go.Shape,
       "RoundedRectangle", // string argument can name a predefined figure
       { fill: "#fafafa", stroke: null },
+      new go.Binding("fill", "backgroundColor")),
 
     _(go.TextBlock, "Default Text",
       { margin: 12, stroke: "black", font: "bold 16px sans-serif" },
-      new go.Binding("text", "name")
+      new go.Binding("text", "name"),
+      new go.Binding("stroke", "textColor"))
   );
 
 viewDiagram.linkTemplate =
@@ -140,26 +142,49 @@ var tempToNode =
 viewDiagram.toolManager.linkingTool.temporaryToNode = tempToNode;
 viewDiagram.toolManager.linkingTool.temporaryToPort = tempToNode.port;
 
-var model = $(go.GraphLinksModel);
-model.nodeDataArray =
+var sampleModel = _(go.GraphLinksModel);
+sampleModel.nodeDataArray =
 [
-  { key: "1", name: "Don Meow" },
-  { key: "2", name: "Demeter" },
-  { key: "3", name: "Copricat" },
-  { key: "4", name: "Jellylorum" },
-  { key: "5", name: "Alonzo" },
-  { key: "6", name: "Munkustrap" }
+  { key: "1", name: "Loading...", backgroundColor: null, textColor: "white" }
 ];
-model.linkDataArray =
-[
-  { from: "1", to: "2", text: "1 to 2" },
-  { from: "1", to: "3", text: "1 to 3" },
-  { from: "2", to: "4", text: "2 to 4" },
-  { from: "3", to: "5", text: "3 to 5" },
-  { from: "3", to: "6", text: "3 to 6" },
-  { from: "5", to: "4", text: "5 to 4" }
-];
-viewDiagram.model = model;
+viewDiagram.model = sampleModel;
+
+$.ajax({
+  url: './1.json',
+  cache: true,
+  dataType: 'json',
+  async: false,
+  success: function(data) {
+    var newDigModel = _(go.GraphLinksModel);
+    var stories = data.stories || {};
+    var ids = Object.keys(stories) || [];
+    var nodes = [];
+    var links = [];
+    for(var i = 0; i < ids.length; ++i) {
+      nodes.push({ key: ids[i], name: '#' + ids[i] });
+    }
+    for(var i = 0; i < ids.length; ++i) {
+      var page = stories[ids[i]];
+      if (page.choice) {
+        var choices = Object.keys(page.choice) || [];
+        for(var j = 0; j < choices.length; ++j) {
+          links.push({ from: ids[i], to: page.choice[choices[j]].next, text: page.choice[choices[j]].title });
+        }
+      } else {
+        links.push({ from: ids[i], to: page.next, text: null });
+      }
+    }
+    newDigModel.nodeDataArray = nodes;
+    newDigModel.linkDataArray = links;
+    viewDiagram.model = newDigModel;
+  },
+  // complete: console.log,
+  error: function(req, status, error) {
+    var newDigModel = _(go.GraphLinksModel);
+    newDigModel.nodeDataArray = [{ key: 0, name: req.statusText.split(': ').join(':\n'), textColor: 'red', backgroundColor: null }];
+    viewDiagram.model = newDigModel;
+  }
+});
 
 </script>
 </html>
