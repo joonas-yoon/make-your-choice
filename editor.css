@@ -6,21 +6,8 @@
 html, body {
     margin: 0;
     padding: 0;
-}
-/* scroll */
-::-webkit-scrollbar {
-    display: block !important;
-    width: 4px;
-    height: 4px;
-}
-::-webkit-scrollbar-thumb {
-    background: rgba(128, 128, 128, .75);
-}
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(128, 128, 128, .9);
-}
-::-webkit-scrollbar-track {
-    background: rgba(128, 128, 128, .5);
+    font-size: medium;
+    line-height: 1.5;
 }
 /* editor */
 .nav {
