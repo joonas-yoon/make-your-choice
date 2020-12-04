@@ -15,20 +15,31 @@
 </head>
 <body>
   <div id="navbar" class="nav">
-    <a href="#" class="item"><i class="fas fa-th-list"></i></a>
     <a href="#" class="item"><i class="fas fa-play"></i></a>
-    <a href="#" class="item"><i class="fas fa-save"></i></a>
     <a href="#" class="item active"><i class="fas fa-edit"></i></a>
     <a href="#" class="item"><i class="fas fa-cog"></i></a>
   </div>
   <div class="body">
     <div id="viewer">
-      <div id="editor" class="content">
+      <div id="readyEditor" class="content">
+        <div class="ui placeholder inverted center aligned segment" style="height: 100%;">
+          <p style="margin: 0">Click node/edge to edit a page/option</p>
+        </div>
+      </div>
+      <div id="nodeEditor" class="content">
         <div class="ui container">
+          <h1 class="ui inverted header">Edit : Page</h1>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta, mauris vel tristique ullamcorper, lectus est lobortis eros, sit amet volutpat velit lacus eu nibh. Integer odio mi, feugiat egestas iaculis a, suscipit vel lorem. Nullam facilisis ipsum arcu, sed sodales nisi finibus at.</p>
           <p>Vestibulum viverra efficitur lectus, at commodo ante dapibus quis. Sed at nulla non nunc porttitor lobortis eu in urna. Cras hendrerit pellentesque mauris, nec tincidunt arcu. Cras nisl purus, porta sed orci non, tempor cursus tellus. Nam id massa augue. Curabitur odio eros, sagittis sit amet dignissim non, maximus et urna.</p>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nulla est, eleifend sit amet lobortis sodales, tempor et nulla.</p>
           <p>Donec fringilla diam a ipsum hendrerit tristique. Morbi porta hendrerit pellentesque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas quam urna, tristique eu sodales a, ornare a nisi. Praesent quis maximus nibh. Vivamus suscipit congue mi, ut bibendum diam semper eget. Nulla condimentum mollis tristique. Aliquam non maximus ante. Nullam placerat posuere dui, vitae viverra dolor egestas et. Nam vehicula lacus tincidunt, rhoncus felis eget, accumsan ligula. Proin accumsan dolor ut commodo sollicitudin. Sed euismod purus vitae tortor luctus pulvinar.<p>
+        </div>
+      </div>
+      <div id="edgeEditor" class="content">
+        <div class="ui container">
+          <h1 class="ui inverted header">Edit : Option</h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <p>Integer porta, mauris vel tristique ullamcorper, lectus est lobortis eros, sit amet volutpat velit lacus eu nibh. Integer odio mi, feugiat egestas iaculis a, suscipit vel lorem. Nullam facilisis ipsum arcu, sed sodales nisi finibus at.</p>
         </div>
       </div>
       <div id="player" class="content">
@@ -75,7 +86,9 @@ viewDiagram.nodeTemplate =
       portId: "",
       cursor: "pointer",
       fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
-      toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
+      toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true,
+
+      click: nodeClicked
     },
     
     _(go.Shape,
@@ -99,7 +112,9 @@ viewDiagram.linkTemplate =
       adjusting: go.Link.Stretch,
       reshapable: true,
       relinkableFrom: true,
-      relinkableTo: true
+      relinkableTo: true,
+
+      click: edgeClicked
     },
 
     // the link path, a Shape
@@ -179,6 +194,8 @@ $.ajax({
     newDigModel.nodeDataArray = nodes;
     newDigModel.linkDataArray = links;
     viewDiagram.model = newDigModel;
+    
+    getCurrentView('readyEditor');
   },
   // complete: console.log,
   error: function(req, status, error) {
@@ -187,6 +204,32 @@ $.ajax({
     viewDiagram.model = newDigModel;
   }
 });
+
+function nodeClicked(e, obj) {
+  getCurrentView('nodeEditor');
+  var node = obj.part;
+  console.log(node);
+}
+
+function edgeClicked(e, obj) {
+  getCurrentView('edgeEditor');
+  var edge = obj.part;
+  console.log(edge);
+}
+
+function getCurrentView(id) {
+  var viewer = document.getElementById('viewer');
+  var contents = viewer.getElementsByClassName('content');
+  // hide all contents and show matched
+  for (var i = 0; i < contents.length; ++i) {
+    if (contents[i].id == id) {
+      contents[i].classList.add('active');
+    } else {
+      contents[i].classList.remove('active');
+    }
+  }
+}
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
 </html>
