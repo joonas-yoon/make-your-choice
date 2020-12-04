@@ -52,7 +52,15 @@
         <div class="ui container">
           <h1 class="ui inverted header" style="margin-bottom: .2rem">Edit : Option</h1>
           <h2 style="font-size: 1.3rem; margin-top: 0;">(<span id="pageFrom"></span> &#8594; <span id="pageTo"></span>)</h2>
-          <div class="ui inverted form">
+          <div class="ui inverted form" style="margin-bottom: 1rem;">
+            <div class="inline field">
+              <div id="propDirect" class="ui inverted toggle blue checkbox">
+                <input type="checkbox" tabindex="0" class="hidden">
+                <label>No option</label>
+              </div>
+            </div>
+          </div>
+          <div class="ui inverted toggle form">
             <div class="required field">
               <label>Option Text</label>
               <input type="text" name="otext" placeholder="Option text here ..." value=""/>
@@ -71,6 +79,8 @@
                 <i class="plus icon"></i> Add updates
               </button>
             </div>
+          </div>
+          <div class="ui inverted form" style="margin-bottom: 1rem;">
             <div class="field" style="margin-top: 2rem;">
               <button id="saveButton" class="ui primary button" type="button">Save</button>
               <button id="deleteButton" class="ui inverted red button" type="button">Delete</button>
@@ -237,10 +247,12 @@ function drawDiagram(json) {
     if (page.choice) {
       var choices = Object.keys(page.choice) || [];
       for(var j = 0; j < choices.length; ++j) {
-        links.push({ from: ids[i], to: page.choice[choices[j]].next, text: page.choice[choices[j]].title });
+        var f = ids[i], t = page.choice[choices[j]].next;
+        links.push({ key: f+'-'+t+'-'+j, from: f, to: t, text: page.choice[choices[j]].title });
       }
     } else {
-      links.push({ from: ids[i], to: page.next, text: null });
+      var f = ids[i], t = page.next;
+      links.push({ key: f+'-'+t, from: f, to: t, text: null });
     }
   }
   newDigModel.nodeDataArray = nodes;
@@ -285,6 +297,17 @@ function edgeClicked(e, obj) {
   editForm.querySelector('#pageFrom').innerText = '#' + from;
   editForm.querySelector('#pageTo').innerText = '#' + to;
   editForm.querySelector('input[name=otext]').value = edge.data.text || '';
+  var chkbox = editForm.querySelector('#propDirect');
+  $(chkbox).checkbox({
+    onChecked: function(){
+      $(editForm.querySelector('.toggle.form')).transition('fade up');
+    },
+    onUnchecked: function(){
+      $(editForm.querySelector('.toggle.form')).transition('fade down');
+    }
+  }).checkbox(edge.data.key.split('-').length == 2 ? 'check' : 'uncheck');
+  
+  console.log(edge.data);
 }
 
 function getCurrentView(id) {
