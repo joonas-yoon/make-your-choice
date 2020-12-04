@@ -36,7 +36,7 @@
             </div>
             <!-- checkbox for ending -->
             <div class="inline field">
-              <div class="ui inverted toggle checkbox">
+              <div id="propEnd" class="ui inverted toggle checkbox">
                 <input type="checkbox" tabindex="0" class="hidden">
                 <label>This is <b>the end</b></label>
               </div>
@@ -175,40 +175,16 @@ sampleModel.nodeDataArray =
 ];
 viewDiagram.model = sampleModel;
 
+var gameJson = {};
+
 $.ajax({
   url: './1.json',
   cache: true,
   dataType: 'json',
   async: false,
-  success: function(data) {
-    var newDigModel = _(go.GraphLinksModel);
-    var stories = data.stories || {};
-    var ids = Object.keys(stories) || [];
-    var nodes = [];
-    var links = [];
-    for(var i = 0; i < ids.length; ++i) {
-      var node = { key: ids[i], name: '#' + ids[i] };
-      if (data.start == ids[i]) {
-        node.backgroundColor = '#1e90ff';
-        node.textColor = '#ffffff';
-      }
-      nodes.push(node);
-    }
-    for(var i = 0; i < ids.length; ++i) {
-      var page = stories[ids[i]];
-      if (page.choice) {
-        var choices = Object.keys(page.choice) || [];
-        for(var j = 0; j < choices.length; ++j) {
-          links.push({ from: ids[i], to: page.choice[choices[j]].next, text: page.choice[choices[j]].title });
-        }
-      } else {
-        links.push({ from: ids[i], to: page.next, text: null });
-      }
-    }
-    newDigModel.nodeDataArray = nodes;
-    newDigModel.linkDataArray = links;
-    viewDiagram.model = newDigModel;
-    
+  success: function(json){
+    gameJson = json;
+    drawDiagram(json);
     getCurrentView('readyEditor');
   },
   // complete: console.log,
@@ -219,11 +195,61 @@ $.ajax({
   }
 });
 
+function drawDiagram(json) {
+  var newDigModel = _(go.GraphLinksModel);
+  var stories = json.stories || {};
+  var ids = Object.keys(stories) || [];
+  var nodes = [];
+  var links = [];
+  for(var i = 0; i < ids.length; ++i) {
+    var node = { key: ids[i], name: '#' + ids[i] };
+    if (json.start == ids[i]) {
+      node.backgroundColor = '#1e90ff';
+      node.textColor = '#ffffff';
+    }
+    nodes.push(node);
+  }
+  for(var i = 0; i < ids.length; ++i) {
+    var page = stories[ids[i]];
+    if (page.choice) {
+      var choices = Object.keys(page.choice) || [];
+      for(var j = 0; j < choices.length; ++j) {
+        links.push({ from: ids[i], to: page.choice[choices[j]].next, text: page.choice[choices[j]].title });
+      }
+    } else {
+      links.push({ from: ids[i], to: page.next, text: null });
+    }
+  }
+  newDigModel.nodeDataArray = nodes;
+  newDigModel.linkDataArray = links;
+  viewDiagram.model = newDigModel;
+}
+
 function nodeClicked(e, obj) {
   getCurrentView('nodeEditor');
   var node = obj.part;
-  var el = document.getElementById('nodeEditor');
-  el.querySelector('#pageName').innerText = node.data.name;
+  var data = gameJson.stories[node.data.key];
+  var nodeForm = document.getElementById('nodeEditor');
+  nodeForm.querySelector('#pageName').innerText = node.data.name;
+  $(nodeForm.querySelector('#propEnd')).checkbox(data.end ? 'check' : 'uncheck');
+  var editor = nodeForm.querySelector('textarea.editor');
+  editor.value = data.sentences.join('\n\n') || '';
+  resizeTextarea(editor);
+  var saveButton = document.getElementById('saveButton');
+  var btn = saveButton.cloneNode(true);
+  btn.addEventListener('click', function(evt){
+    evt.preventDefault();
+    var s = gameJson.stories, k = node.data.key;
+    s[k].sentences = (editor.value || '').trim().replace(/\n+/g, '\n').split('\n');
+    drawDiagram(gameJson);
+    $('body').toast({
+      class: 'success',
+      title: 'Page ' + node.data.name,
+      message: 'Your page has been saved successfully'
+    });
+    return false;
+  });
+  saveButton.parentNode.replaceChild(btn, saveButton);
 }
 
 function edgeClicked(e, obj) {
@@ -245,9 +271,13 @@ function getCurrentView(id) {
   }
 }
 
+function resizeTextarea(el) {
+  $(el).height(1).height($(el).prop('scrollHeight'));
+}
+
 $('.ui.checkbox').checkbox();
 $('textarea').on('keydown keyup keypress', function() {
-  $(this).height(1).height($(this).prop('scrollHeight'));
+  resizeTextarea(this);
 });
 </script>
 </html>
