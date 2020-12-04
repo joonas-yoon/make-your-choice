@@ -36,7 +36,7 @@
             </div>
             <!-- checkbox for ending -->
             <div class="inline field">
-              <div id="propEnd" class="ui inverted toggle checkbox">
+              <div id="propEnd" class="ui inverted toggle red checkbox">
                 <input type="checkbox" tabindex="0" class="hidden">
                 <label>This is <b>the end</b></label>
               </div>
@@ -50,9 +50,32 @@
       </div>
       <div id="edgeEditor" class="content">
         <div class="ui container">
-          <h1 class="ui inverted header">Edit : Option</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          <p>Integer porta, mauris vel tristique ullamcorper, lectus est lobortis eros, sit amet volutpat velit lacus eu nibh. Integer odio mi, feugiat egestas iaculis a, suscipit vel lorem. Nullam facilisis ipsum arcu, sed sodales nisi finibus at.</p>
+          <h1 class="ui inverted header" style="margin-bottom: .2rem">Edit : Option</h1>
+          <h2 style="font-size: 1.3rem; margin-top: 0;">(<span id="pageFrom"></span> &#8594; <span id="pageTo"></span>)</h2>
+          <div class="ui inverted form">
+            <div class="required field">
+              <label>Option Text</label>
+              <input type="text" name="otext" placeholder="Option text here ..." value=""/>
+            </div>
+            <!-- conditions -->
+            <div class="field" id="edgeConditions">
+              <label>Conditions</label>
+              <button class="ui basic fluid inverted add button">
+                <i class="plus icon"></i> Add condition
+              </button>
+            </div>
+            <!-- updates -->
+            <div class="field" id="edgeUpdates">
+              <label>Updates</label>
+              <button class="ui basic fluid inverted add button">
+                <i class="plus icon"></i> Add updates
+              </button>
+            </div>
+            <div class="field" style="margin-top: 2rem;">
+              <button id="saveButton" class="ui primary button" type="button">Save</button>
+              <button id="deleteButton" class="ui inverted red button" type="button">Delete</button>
+            </div>
+          </div>
         </div>
       </div>
       <div id="player" class="content">
@@ -229,10 +252,10 @@ function nodeClicked(e, obj) {
   getCurrentView('nodeEditor');
   var node = obj.part;
   var data = gameJson.stories[node.data.key];
-  var nodeForm = document.getElementById('nodeEditor');
-  nodeForm.querySelector('#pageName').innerText = node.data.name;
-  $(nodeForm.querySelector('#propEnd')).checkbox(data.end ? 'check' : 'uncheck');
-  var editor = nodeForm.querySelector('textarea.editor');
+  var editForm = document.getElementById('nodeEditor');
+  editForm.querySelector('#pageName').innerText = node.data.name;
+  $(editForm.querySelector('#propEnd')).checkbox(data.end ? 'check' : 'uncheck');
+  var editor = editForm.querySelector('textarea.editor');
   editor.value = data.sentences.join('\n\n') || '';
   resizeTextarea(editor);
   var saveButton = document.getElementById('saveButton');
@@ -255,7 +278,13 @@ function nodeClicked(e, obj) {
 function edgeClicked(e, obj) {
   getCurrentView('edgeEditor');
   var edge = obj.part;
-  console.log(edge);
+  var editForm = document.getElementById('edgeEditor');
+  var from = edge.data.from, to = edge.data.to;
+  var dataFrom = gameJson.stories[from];
+  var dataTo = gameJson.stories[to];
+  editForm.querySelector('#pageFrom').innerText = '#' + from;
+  editForm.querySelector('#pageTo').innerText = '#' + to;
+  editForm.querySelector('input[name=otext]').value = edge.data.text || '';
 }
 
 function getCurrentView(id) {

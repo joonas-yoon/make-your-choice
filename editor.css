@@ -78,18 +78,20 @@ html, body {
     height: 5rem;
     min-height: 5rem;
     max-height: none;
-    border-bottom: 3px solid rgb(128, 128, 128);
-    border-radius: 0px;
-    color: white;
     line-height: 175%;
-    background: rgba(128, 128, 128, 0.2);
-    transition: background-color .2s ease-in-out, border-color .2s ease-in-out;
     resize: none;
 }
-#viewer textarea.editor:focus {
+#viewer textarea.editor, #edgeEditor input[type=text] {
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
+    border-bottom: 3px solid rgb(128, 128, 128);
+    border-radius: 0px;
+    color: white;
+    background: rgba(128, 128, 128, 0.2);
+    transition: background-color .2s ease-in-out, border-color .2s ease-in-out;
+}
+#viewer textarea.editor:focus, #edgeEditor input[type=text]:focus {
     border-bottom-color: #2185d0;
     background: rgba(128, 128, 128, 0.25);
 }
@@ -99,8 +101,11 @@ html, body {
 #viewer .ui.inverted.toggle.checkbox:hover label:before {
     background-color: rgba(255,255,255,.6) !important;
 }
-#viewer .ui.inverted.toggle.checkbox input:checked~label:before {
+#viewer .ui.inverted.toggle.red.checkbox input:checked~label:before {
     background-color: #ff695e !important;
+}
+#viewer .ui.inverted.toggle.blue.checkbox input:checked~label:before {
+    background-color: #1678c2 !important;
 }
 #diagram {
     position: absolute;
