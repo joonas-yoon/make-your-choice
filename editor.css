@@ -74,6 +74,34 @@ html, body {
 #viewer .content .container {
     padding: 1rem 2rem;
 }
+#viewer textarea.editor {
+    height: 5rem;
+    min-height: 5rem;
+    max-height: none;
+    border-bottom: 3px solid rgb(128, 128, 128);
+    border-radius: 0px;
+    color: white;
+    line-height: 175%;
+    background: rgba(128, 128, 128, 0.2);
+    transition: background-color .2s ease-in-out, border-color .2s ease-in-out;
+    resize: none;
+}
+#viewer textarea.editor:focus {
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: #2185d0;
+    background: rgba(128, 128, 128, 0.25);
+}
+#viewer .ui.inverted.toggle.checkbox label:before {
+    background-color: rgba(255,255,255,.5) !important;
+}
+#viewer .ui.inverted.toggle.checkbox:hover label:before {
+    background-color: rgba(255,255,255,.6) !important;
+}
+#viewer .ui.inverted.toggle.checkbox input:checked~label:before {
+    background-color: #ff695e !important;
+}
 #diagram {
     position: absolute;
     left: 50%;

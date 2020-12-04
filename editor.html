@@ -28,11 +28,24 @@
       </div>
       <div id="nodeEditor" class="content">
         <div class="ui container">
-          <h1 class="ui inverted header">Edit : Page</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta, mauris vel tristique ullamcorper, lectus est lobortis eros, sit amet volutpat velit lacus eu nibh. Integer odio mi, feugiat egestas iaculis a, suscipit vel lorem. Nullam facilisis ipsum arcu, sed sodales nisi finibus at.</p>
-          <p>Vestibulum viverra efficitur lectus, at commodo ante dapibus quis. Sed at nulla non nunc porttitor lobortis eu in urna. Cras hendrerit pellentesque mauris, nec tincidunt arcu. Cras nisl purus, porta sed orci non, tempor cursus tellus. Nam id massa augue. Curabitur odio eros, sagittis sit amet dignissim non, maximus et urna.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nulla est, eleifend sit amet lobortis sodales, tempor et nulla.</p>
-          <p>Donec fringilla diam a ipsum hendrerit tristique. Morbi porta hendrerit pellentesque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas quam urna, tristique eu sodales a, ornare a nisi. Praesent quis maximus nibh. Vivamus suscipit congue mi, ut bibendum diam semper eget. Nulla condimentum mollis tristique. Aliquam non maximus ante. Nullam placerat posuere dui, vitae viverra dolor egestas et. Nam vehicula lacus tincidunt, rhoncus felis eget, accumsan ligula. Proin accumsan dolor ut commodo sollicitudin. Sed euismod purus vitae tortor luctus pulvinar.<p>
+          <h1 class="ui inverted header">Edit : Page (<span id="pageName"></span>)</h1>
+          <div class="ui inverted form">
+            <div class="required field">
+              <label>Description</label>
+              <textarea class="editor" placeholder="Edit description here ..."></textarea>
+            </div>
+            <!-- checkbox for ending -->
+            <div class="inline field">
+              <div class="ui inverted toggle checkbox">
+                <input type="checkbox" tabindex="0" class="hidden">
+                <label>This is <b>the end</b></label>
+              </div>
+            </div>
+            <div class="field">
+              <button id="saveButton" class="ui primary button" type="button">Save</button>
+              <button id="deleteButton" class="ui inverted red button" type="button">Delete</button>
+            </div>
+          </div>
         </div>
       </div>
       <div id="edgeEditor" class="content">
@@ -51,6 +64,7 @@
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
 <script type="text/javascript">
 
 var _ = go.GraphObject.make;
@@ -208,7 +222,8 @@ $.ajax({
 function nodeClicked(e, obj) {
   getCurrentView('nodeEditor');
   var node = obj.part;
-  console.log(node);
+  var el = document.getElementById('nodeEditor');
+  el.querySelector('#pageName').innerText = node.data.name;
 }
 
 function edgeClicked(e, obj) {
@@ -230,6 +245,9 @@ function getCurrentView(id) {
   }
 }
 
+$('.ui.checkbox').checkbox();
+$('textarea').on('keydown keyup keypress', function() {
+  $(this).height(1).height($(this).prop('scrollHeight'));
+});
 </script>
-<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
 </html>
