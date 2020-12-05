@@ -9,7 +9,7 @@ $(document).ready(function(){
       items = items || {};
       let inven = this.container.querySelector('#inventory');
       inven.innerHTML = '';
-      var keys = Object.keys(items);
+      var keys = Object.keys(items).sort(function(a, b) { return items[a] - items[b]; });
       console.log(items);
       for (let i = 0; i < keys.length; ++i) {
         let value = items[keys[i]];
@@ -278,4 +278,8 @@ $(document).ready(function(){
   } else {
     startGame();
   }
+
+  $('#hud').on('click', function(evt){
+    this.classList.toggle('inactive');
+  });
 });

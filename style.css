@@ -34,11 +34,26 @@ html, body {
   top: 0;
   left: 0;
   margin: 0;
-  padding: 1rem 1.125rem;
+  width: 200px;
+  padding: 1rem 18px;
   font-size: 85%;
   color: rgba(0,0,0, .75);
   z-index: 10;
-  transition: color 1s ease-in-out;
+  transition: color 1s ease-in-out, left 1s ease-in-out;
+}
+#hud:after {
+  position: absolute;
+  right: 0;
+  top: 1rem;
+  font-family: Icons;
+  font-style: normal;
+  font-size: 1.75rem;
+}
+#hud.inactive {
+  left: -175px;
+}
+#hud.inactive:after {
+  content: "\f0da";
 }
 #hud #inventory {
   margin: 0;
