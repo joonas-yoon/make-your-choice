@@ -20,7 +20,7 @@ Editor
 Game
 - Player State
 - - [x] Items
-- [ ] Theme
+- [x] Theme
 - [ ] Ending modal
 - [ ] Default ending
 - [x] Recursive (fix bug)

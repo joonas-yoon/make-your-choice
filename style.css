@@ -9,6 +9,7 @@ html, body {
   font-size: medium;
   line-height: 1.5;
   overflow-x: hidden;
+  transition: background-color 1s ease-in-out;
 }
 /* scroll bar */
 ::-webkit-scrollbar {
@@ -37,6 +38,7 @@ html, body {
   font-size: 85%;
   color: rgba(0,0,0, .75);
   z-index: 10;
+  transition: color 1s ease-in-out;
 }
 #hud #inventory {
   margin: 0;
@@ -45,8 +47,9 @@ html, body {
 #hud #inventory li {
   list-style: none;
 }
-#hud #inventory li.negative {
-  color: rgb(218, 43, 43, 0.75);
+#hud .negative {
+  color: rgba(218, 43, 43, 0.75);
+  transition: color 1s ease-in-out;
 }
 #main {
   padding: 1rem 0;
@@ -58,7 +61,7 @@ html, body {
 
 #main .segment {
   margin: 1rem auto;
-  transition: opacity 0.75s, filter 0.75s, -ms-filter 0.75s;
+  transition: opacity 0.75s, filter 0.75s, -ms-filter 0.75s, background-color 1s;
 }
 
   #main .segment.history {
@@ -145,3 +148,26 @@ html, body {
     border-radius: 0.2rem;
   }
 }
+
+/* Themes */
+body.dark { color: #dddddd; background-color: #191919; }
+body.dark #main .segment { background-color: #3f3f3f; }
+body.dark #hud { color: #cccccc; }
+body.sepia { color: #1a1a1a; background-color: #704214; }
+body.sepia #main .segment { color: #33322f; background-color: #a77b50; }
+body.sepia #hud { color: rgba(255,255,255,.65); }
+body.red { color: black; background-color:#C3272B; }
+body.red #main .segment { color: #fafafa; background-color: #af2225; }
+body.red #hud { color: rgba(255,255,255,.75); }
+body.red #hud .negative { color: rgba(0,0,0,0.75); }
+body.blue { color: black; background-color:#59ABE3; }
+body.blue #main .segment { color: black; background-color: #5eb4ef; }
+body.blue #hud { color: rgba(255,255,255,.75); }
+body.blue #hud .negative { color: rgba(0,0,0,0.75); }
+body.green { color: white; background-color:#006442; }
+body.green #main .segment { color: white; background-color: #357b52; }
+body.green #hud { color: rgba(255,255,255,.5); }
+body.green #hud .negative { color: rgba(217,255,11,.8); }
+body.gray { color: #2a2a2a; background-color:#BDC3C7; }
+body.gray #main .segment { color: #2a2a2a; background-color: #e4e4e4; }
+body.gray #hud { color: black; }
