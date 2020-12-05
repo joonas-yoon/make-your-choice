@@ -56,7 +56,7 @@
             <div class="inline field">
               <div id="propDirect" class="ui inverted toggle blue checkbox">
                 <input type="checkbox" tabindex="0" class="hidden">
-                <label>No option</label>
+                <label>Use</label>
               </div>
             </div>
           </div>
@@ -68,17 +68,18 @@
               </div>
             </div>
             <!-- conditions -->
-            <div class="ui inverted form" id="edgeConditions">
+            <div class="ui inverted form meta" id="edgeConditions">
               <h4 class="ui dividing inverted header">Conditions</h4>
-              <div class="fields">
+              <!-- template -->
+              <div class="hidden fields" id="template">
                 <div class="eight wide required field">
                   <label>Item Name</label>
-                  <input type="text" value="">
+                  <input type="text" name="name" value="">
                 </div>
                 <div class="four wide field">
                   <label>&nbsp;</label>
                   <select class="ui fluid inverted dropdown">
-                    <option value="eq">&equals;</option>
+                    <option value="eq" selected>&equals;</option>
                     <option value="ne">&ne;</option>
                     <option value="lt">&lt;</option>
                     <option value="le">&le;</option>
@@ -88,26 +89,33 @@
                 </div>
                 <div class="four wide required field">
                   <label>Count</label>
-                  <input type="number" value="0">
+                  <input type="number" name="count" value="0">
                 </div>
               </div>
+              <!-- /template -->
+              <div id="edgeConditionsList" class="list"></div>
               <button class="ui basic fluid inverted add button">
                 <i class="plus icon"></i> Add condition
               </button>
             </div>
             <!-- updates -->
-            <div class="ui inverted form" id="edgeUpdates">
+            <div class="ui inverted form meta" id="edgeUpdates">
               <h4 class="ui dividing inverted header">Update Items</h4>
-              <div class="required fields">
-                <div class="twelve wide field">
-                  <label>Item Name</label>
-                  <input type="text" value="">
-                </div>
-                <div class="four wide field">
-                  <label>Count</label>
-                  <input type="number" value="0">
+              <!-- template -->
+              <div class="hidden fields" id="template">
+                <div class="required fields">
+                  <div class="twelve wide field">
+                    <label>Item Name</label>
+                    <input type="text" value="">
+                  </div>
+                  <div class="four wide field">
+                    <label>Count</label>
+                    <input type="number" value="0">
+                  </div>
                 </div>
               </div>
+              <!-- /template -->
+              <div id="edgeUpdatesList" class="list"></div>
               <button class="ui basic fluid inverted add button">
                 <i class="plus icon"></i> Add updates
               </button>
@@ -337,13 +345,46 @@ function edgeClicked(e, obj) {
   editForm.querySelector('#pageTo').innerText = '#' + to;
   editForm.querySelector('input[name=otext]').value = edge.data.text || '';
   var chkbox = editForm.querySelector('#propDirect');
+  var hasOption = (edge.data.key || '').split('-').length > 2;
   $(chkbox).checkbox({
-    onChange: function(){
-      $(editForm.querySelector('.forms')).transition('fade down');
+    onChecked: function(){
+      $(editForm.querySelector('.forms')).transition('hide').transition('fade down');
+    }, 
+    onUnchecked: function(){
+      $(editForm.querySelector('.forms')).transition('show').transition('fade down');
     }
-  }).checkbox((edge.data.key || '').split('-').length == 2 ? 'check' : 'uncheck');
+  }).checkbox(hasOption ? 'check' : 'uncheck');
   
-  console.log(edge.data);
+  function addNewItem(el) {
+    var p = el.parentElement;
+    var row = p.querySelector('#template').cloneNode(true);
+    row.classList.remove('hidden');
+    p.querySelector('.list').appendChild(row);
+    p.querySelectorAll('.ui.dropdown').forEach(function(e, i){$(e).dropdown();})
+    return row;
+  }
+
+  var ecl = document.getElementById('edgeConditionsList');
+  ecl.innerHTML = '';
+  if (hasOption) {
+    var idx = edge.data.key.split('-')[2];
+    var conds = dataFrom.choice[idx].condition || [];
+    for (var i = 0; i < conds.length; ++i) {
+      var name = conds[i][0];
+      var oper = conds[i][1];
+      var cnt = conds[i][2];
+      var row = addNewItem(ecl);
+      row.querySelector('input[name=name]').value = name;
+      $(row.querySelector('.dropdown')).dropdown('set selected', oper);
+      row.querySelector('input[name=count]').value = cnt;
+    }
+  }
+  
+  $('.meta.form button.add').off('click').on('click', function(evt){
+    evt.preventDefault();
+    addNewItem(evt.target);
+    return false;
+  });
 }
 
 function getCurrentView(id) {
