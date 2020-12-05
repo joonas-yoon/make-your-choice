@@ -6,7 +6,6 @@
   <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.css">
-  <link rel="stylesheet" href="assets/font-awesome/css/all.min.css" type="text/css" />
   <link rel="stylesheet" href="editor.css" type="text/css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- use go-debug.js when developing and go.js when deploying -->
@@ -15,9 +14,9 @@
 </head>
 <body>
   <div id="navbar" class="nav">
-    <a href="#" class="item"><i class="fas fa-play"></i></a>
-    <a href="#" class="item active"><i class="fas fa-edit"></i></a>
-    <a href="#" class="item"><i class="fas fa-cog"></i></a>
+    <a href="javascript:playGame()" class="item"><i class="play icon"></i></a>
+    <a href="javascript:getCurrentView('readyEditor')" class="item active"><i class="edit icon"></i></a>
+    <a href="javascript:getCurrentView('readyEditor')" class="item"><i class="setting icon"></i></a>
   </div>
   <div class="body">
     <div id="viewer">
@@ -416,10 +415,24 @@ function resizeTextarea(el) {
   $(el).height(1).height($(el).prop('scrollHeight'));
 }
 
-$('.ui.checkbox').checkbox();
-$('.ui.dropdown').dropdown();
-$('textarea').on('keydown keyup keypress', function() {
-  resizeTextarea(this);
+function playGame() {
+  var frame = document.getElementById('player').querySelector('iframe');
+  frame.src = 'index.html?j=' + encodeURI(JSON.stringify(gameJson));
+  getCurrentView('player');
+}
+
+$(document).ready(function(){
+  $('textarea').on('keydown keyup keypress', function() {
+    resizeTextarea(this);
+  });
+  $('#navbar .item').on('click', function(evt){
+    var el = evt.target;
+    if (el.tagName.toLowerCase() == 'i') el = el.parentElement;
+    el.parentElement.querySelectorAll('.item').forEach(function(e, i){
+      if (el == e) e.classList.add('active');
+      else e.classList.remove('active');
+    });
+  });
 });
 </script>
 </html>
