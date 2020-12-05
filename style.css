@@ -28,6 +28,26 @@ html, body {
   border-radius: 0;
 }
 /* styles */
+#hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 1rem 1.125rem;
+  font-size: 85%;
+  color: rgba(0,0,0, .75);
+  z-index: 10;
+}
+#hud #inventory {
+  margin: 0;
+  padding: 0;
+}
+#hud #inventory li {
+  list-style: none;
+}
+#hud #inventory li.negative {
+  color: rgb(218, 43, 43, 0.75);
+}
 #main {
   padding: 1rem 0;
 }

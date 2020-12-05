@@ -1,6 +1,27 @@
 $(document).ready(function(){
   const mainContainer = document.getElementById('main');
 
+  let hud = {
+    /* variables */
+    container: document.getElementById('hud'),
+    /* functions */
+    updateInventory: function (items) {
+      items = items || {};
+      let inven = this.container.querySelector('#inventory');
+      inven.innerHTML = '';
+      var keys = Object.keys(items);
+      console.log(items);
+      for (let i = 0; i < keys.length; ++i) {
+        let value = items[keys[i]];
+        if (value == 0) continue;
+        let item = document.createElement('li');
+        if (value < 0) item.className = 'negative';
+        item.innerText = keys[i] + ': ' + value;
+        inven.appendChild(item);
+      }
+    }
+  };
+
   let player = {
     /* variables */
     items : {},
@@ -29,11 +50,27 @@ $(document).ready(function(){
     saveItems: function(newItems) {
       newItems = newItems || {};
       let keys = Object.keys(newItems);
-      for (let i=0; i < keys.length; ++i) {
+      for (let i = 0; i < keys.length; ++i) {
         let name = keys[i];
-        let value = this.items[name];
-        this.items[name] = (value || 0) + Math.floor(newItems[name]);
+        let value = newItems[name] || 0;
+        this.items[name] = (this.items[name] || 0) + value;
+        if (value > 0) {
+          $('body').toast({
+            class: 'green',
+            message: 'You\'ve got <b>' + name + '</b>: ' + value,
+            showProgress: 'bottom',
+            displayTime: 10 * 1000
+          });
+        } else {
+          $('body').toast({
+            class: 'red',
+            message: 'You\'ve lost <b>' + name + '</b>: ' + value,
+            showProgress: 'bottom',
+            displayTime: 10 * 1000
+          });
+        }
       }
+      hud.updateInventory(this.items);
     }
   };
 
