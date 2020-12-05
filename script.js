@@ -6,18 +6,36 @@ $(document).ready(function(){
     items : {},
     /* functions */
     hasCondition: function(condition) {
+      function cmp(oper, a, b) {
+        console.log('compare', a, oper, b);
+        if (oper == 'eq') return a == b;
+        else if (oper == 'ne') return a != b;
+        else if (oper == 'gt') return a > b;
+        else if (oper == 'ge') return a >= b;
+        else if (oper == 'lt') return a < b;
+        else if (oper == 'le') return a <= b;
+        return false;
+      }
       // player.items has all items on condition?
       condition = condition || {};
       let keys = Object.keys(condition);
-      for (let i=0; i < keys.length; ++i){
-        if (this.items[keys[i]] === undefined) return false;
-        if (this.items[keys[i]] < condition[keys[i]]) return false;
+      console.log(player.items);
+      for (let i = 0; i < keys.length; ++i) {
+        let x = this.items[keys[i]];
+        // skip if player does not have it
+        if (x === undefined) return false;
+        // eq, ne, gt, ge, lt, le
+        let y = condition[keys[i]];
+        let ck = Object.keys(y);
+        for (let i = 0; i < ck.length; ++i) {
+          if (false == cmp(ck[i], x, y[ck[i]])) return false;
+        }
       }
       return true;
     },
     saveItems: function(newItems) {
       newItems = newItems || {};
-      var keys = Object.keys(newItems);
+      let keys = Object.keys(newItems);
       for (let i=0; i < keys.length; ++i) {
         let name = keys[i];
         let value = this.items[name];
@@ -193,6 +211,7 @@ $(document).ready(function(){
     } else {
       paginator.showNextLine();
     }
+    evt.target.scrollIntoView({behavior: 'smooth'});
   });
   
   // After load

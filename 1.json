@@ -8,11 +8,7 @@
                 "In commodo, nibh at aliquet ornare, sapien ipsum lacinia dui, in commodo eros dolor ac lectus.",
                 "Sed et finibus lacus. Donec non dapibus nisi. Nam ac turpis dui. Nulla at mauris vestibulum, congue purus vel, luctus mi."
             ],
-            "next": 2,
-            "get": {
-                "item1": 1,
-                "item2": 2
-            }
+            "next": 2
         },
         "2": {
             "sentences": [
@@ -22,46 +18,58 @@
             ],
             "choice": [
                 {
-                    "title": "Go to 3",
-                    "next": 3
-                },
-                {
-                    "title": "Go to 4",
-                    "next": 4,
+                    "title": "Get Gold 30",
+                    "next": 3,
                     "get": {
-                        "item3": 3
+                        "gold": 30
                     }
                 },
                 {
-                    "title": "Go to 5",
+                    "title": "Drop Gold 20",
+                    "next": 3,
+                    "get": {
+                        "gold": -20
+                    }
+                },
+                {
+                    "title": "Nothing",
                     "next": 5
-                },
-                {
-                    "title": "Go to 17",
-                    "next": 17,
-                    "condition": {
-                        "item2": 2
-                    }
                 }
             ]
         },
         "3": {
             "sentences": [
                 "[3] Cras in auctor ex. Quisque cursus massa lorem, a consequat magna bibendum a.",
-                "Etiam ultricies nunc eget felis dictum, sed bibendum ligula congue.",
-                "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-                "Maecenas efficitur nibh scelerisque velit molestie tincidunt. Sed mattis nunc vel dui pretium imperdiet.",
-                "Cras id tellus sed sapien malesuada fringilla sed eget lacus. Vestibulum egestas elit justo, in iaculis urna varius eget.",
                 "Etiam mollis ipsum ante, non placerat erat gravida eget."
             ],
             "choice": [
                 {
-                    "title": "Go to 7",
-                    "next": 7
+                    "title": "Nothing",
+                    "next": 4
                 },
                 {
-                    "title": "Go to 8",
-                    "next": 8
+                    "title": "Get Gold 20",
+                    "next": 8,
+                    "get": {
+                        "gold": 20
+                    }
+                },
+                {
+                    "title": "Buy sword (-10G)",
+                    "next": 8,
+                    "get": {
+                        "gold": -10,
+                        "sword": 1
+                    }
+                },
+                {
+                    "title": "*The answer?",
+                    "next": 13,
+                    "condition": {
+                        "gold": {
+                            "eq": 42
+                        }
+                    }
                 }
             ]
         },
@@ -70,7 +78,7 @@
                 "[4] Integer interdum vehicula turpis sed aliquam. Vivamus vel lacus ullamcorper, sollicitudin nisi id, euismod enim.",
                 "Maecenas arcu enim, mattis et neque at, gravida maximus risus. Donec tincidunt nisl quis iaculis porttitor."
             ],
-            "next": 5
+            "next": 12
         },
         "5": {
             "sentences": [
@@ -81,10 +89,6 @@
                 {
                     "title": "Go to 6",
                     "next": 6
-                },
-                {
-                    "title": "Go to 2",
-                    "next": 2
                 },
                 {
                     "title": "Go to 9",
@@ -122,7 +126,27 @@
                 "Fusce sit amet nisi in lectus semper dignissim ut eget lectus. Curabitur laoreet efficitur tempor. ",
                 "Aliquam tempor vulputate rhoncus. Morbi feugiat augue consequat urna malesuada, et vulputate turpis porttitor. "
             ],
-            "next": 9
+            "choice": [
+                {
+                    "title": "*Has nothing",
+                    "next": 9,
+                    "condition": {
+                        "gold": {
+                            "le": 0
+                        }
+                    }
+                },
+                {
+                    "title": "*Get rich",
+                    "next": 11,
+                    "condition": {
+                        "gold": {
+                            "gt": 0,
+                            "lt": 10
+                        }
+                    }
+                }
+            ]
         },
         "9": {
             "sentences": [
@@ -149,35 +173,7 @@
         },
         "12": {
             "sentences": [
-                "[12] Praesent iaculis placerat neque vel efficitur.",
-                "Vivamus maximus, nisl a ullamcorper lacinia, quam felis dignissim libero, eu volutpat orci magna eget nulla. "
-            ],
-            "next": 13
-        },
-        "13": {
-            "sentences": [
-                "[13] Morbi sed fringilla odio. Aliquam justo felis, scelerisque quis aliquet eget, egestas vitae diam. Morbi congue ullamcorper purus. ",
-                "Etiam eu feugiat odio. Sed nulla tortor, elementum non diam ut, pharetra sollicitudin eros. "
-            ],
-            "next": 14
-        },
-        "14": {
-            "sentences": [
-                "[14] Maecenas sed ex euismod, luctus ante vehicula, mattis lacus. ",
-                "Sed vel libero auctor, hendrerit nisi quis, sollicitudin libero. ",
-                "Praesent justo est, vestibulum id ultrices faucibus, molestie a neque. "
-            ],
-            "next": 15
-        },
-        "15": {
-            "sentences": [
-                "[15] Ut vehicula nisl sed nunc suscipit, nec laoreet ligula sagittis."
-            ],
-            "next": 16
-        },
-        "16": {
-            "sentences": [
-                "[16] Etiam nulla lorem, tincidunt eu massa aliquet, elementum pulvinar nulla.",
+                "[12] Etiam nulla lorem, tincidunt eu massa aliquet, elementum pulvinar nulla.",
                 "Maecenas pretium lobortis tellus id lobortis.",
                 "Praesent justo est, vestibulum id ultrices faucibus, molestie a neque.",
                 "Ut vehicula nisl sed nunc suscipit, nec laoreet ligula sagittis."
@@ -185,23 +181,23 @@
             "choice": [
                 {
                     "title": "Get a red one.",
-                    "next": 17
+                    "next": 13
                 },
                 {
                     "title": "Get a blue one.",
-                    "next": 18
+                    "next": 14
                 }
             ]
         },
-        "17": {
+        "13": {
             "sentences": [
-                "[17] The end - A"
+                "[13] The end - A"
             ],
             "end": true
         },
-        "18": {
+        "14": {
             "sentences": [
-                "[18] The end - B"
+                "[14] The end - B"
             ],
             "end": true
         }
