@@ -15,8 +15,11 @@ $(document).ready(function(){
         let value = items[keys[i]];
         if (value == 0) continue;
         let item = document.createElement('li');
-        if (value < 0) item.className = 'negative';
-        item.innerText = keys[i] + ': ' + value;
+        let absv = Math.abs(value);
+        if (value < 0) {
+          item.className = 'negative';
+        }
+        item.innerText = (value < 0 ? '-':'+') + ' ' + keys[i] + (absv > 1 ? ': ' + absv : '');
         inven.appendChild(item);
       }
     }
@@ -54,17 +57,18 @@ $(document).ready(function(){
         let name = keys[i];
         let value = newItems[name] || 0;
         this.items[name] = (this.items[name] || 0) + value;
+        let vtext = Math.abs(value) > 1 ? Math.abs(value) + '개 ' : '';
         if (value > 0) {
           $('body').toast({
             class: 'green',
-            message: 'You\'ve got <b>' + name + '</b>: ' + value,
+            message: '<b>' + name + '</b>을(를) ' + vtext + '얻었다.',
             showProgress: 'bottom',
             displayTime: 10 * 1000
           });
         } else {
           $('body').toast({
             class: 'red',
-            message: 'You\'ve lost <b>' + name + '</b>: ' + value,
+            message: '<b>' + name + '</b>을(를) ' + vtext + '잃었다.',
             showProgress: 'bottom',
             displayTime: 10 * 1000
           });
