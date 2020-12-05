@@ -1,7 +1,33 @@
-body {
-  padding: 0.5rem 0;
+/* elements */
+*, :after, :before {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
-
+html, body {
+  margin: 0;
+  padding: 0;
+  font-size: medium;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+/* scroll bar */
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 5px;
+  background: rgba(0,0,0,.25);
+  -webkit-transition: color .2s ease;
+  transition: color .2s ease;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,.1);
+  border-radius: 0;
+}
+/* styles */
 #main {
   padding: 1rem 0;
 }
@@ -10,81 +36,83 @@ body {
   padding-bottom: 1rem;
 }
 
-.container {
-  background: #fafafa;
-  border-radius: 0;
+#main .segment {
   margin: 1rem auto;
-  padding: 1rem 2rem;
-  opacity: 0.0;
-  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
   transition: opacity 0.75s, filter 0.75s, -ms-filter 0.75s;
 }
 
-  .container.history {
+  #main .segment.history {
     opacity: 0.5;
+    border-color: transparent;
+    box-shadow: none;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
   }
 
-    .container.history:hover {
+    #main .segment.history:hover {
       opacity: 1.0;
       -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
       filter: alpha(opacity=100);
     }
 
-  .container.active {
+  #main .segment.active {
     opacity: 1.0;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
-    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, .3);
   }
 
-.choice .item {
-  width: 100%;
-  color: #ffffff;
-  border: 1px solid #202020;
-  background-color:#292929;
-  border-radius: 3px;
-  text-align: center;
-  padding: .5rem 1rem;
-  margin: .2rem auto;
-  transition: background-color .1s ease-in-out, margin .15s;
-}
-
-  .container.active .choice .item:hover {
+  #main .segment.active .choice .item:hover {
     background-color: #101010;
     margin-top: .1rem;
     margin-bottom: .3rem;
     cursor: pointer;
   }
 
-  .container.container.history .choice .item {
+  #main .segment#main .segment.history .choice .item {
     opacity: 0.5;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
   }
   
-  .container.container.history .choice .item.active {
+  #main .segment#main .segment.history .choice .item.active {
     color: #1a1a1a;
     border-color: #1a1a1a;
     background-color: #ededed;
   }
 
-  .choice {
-    display: none;
-  }
-
-  .container.active .choice .item.active:hover {
+  #main .segment.active .choice .item.active:hover {
     color: #000;
     border-color: #000;
     background-color: #f6f6f6;
   }
 
-  .container.active .choice .item.active {
+  #main .segment.active .choice .item.active {
     color: #000;
     border-color: #000;
     background-color: #fff;
+  }
+
+.choice.grid {
+  display: none;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+}
+  
+  .choice.grid>.column:not(.row) {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+  
+  .choice.grid .item {
+    width: 100%;
+    color: #ffffff;
+    border: 1px solid #202020;
+    background-color:#292929;
+    border-radius: 3px;
+    text-align: center;
+    padding: .5rem 1rem;
+    margin: .2rem auto;
+    transition: background-color .1s ease-in-out, margin .15s;
   }
 
 .actions {
@@ -92,7 +120,7 @@ body {
 }
 
 @media (min-width: 576px) {
-  .container {
+  #main .segment {
     border-radius: 0.2rem;
   }
 }

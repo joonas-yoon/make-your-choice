@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  const main_container = document.getElementById('main');
+  const mainContainer = document.getElementById('main');
 
   let player = {
     /* variables */
@@ -121,7 +121,7 @@ $(document).ready(function(){
 
         // Create html element
         var el = document.createElement('div');
-        el.className = 'container';
+        el.className = 'ui very padded segment';
         el.id = 'p' + page;
 
         for (var i=0; i < data.sentences.length; ++i) {
@@ -142,7 +142,7 @@ $(document).ready(function(){
           paginator.metadata = data;
         }
 
-        main_container.appendChild(el);
+        mainContainer.appendChild(el);
 
         callback(el);
       });
@@ -177,11 +177,11 @@ $(document).ready(function(){
 
   function createChoiceBox(choice) {
     var row = document.createElement('div');
-    row.className = 'row choice';
+    row.className = 'ui stackable two column grid choice';
     for (var i=0; i < choice.length; ++i) {
       if (!player.hasCondition(choice[i].condition)) continue;
       let col = document.createElement('div');
-      col.className = 'col-12 col-sm-6';
+      col.className = 'column';
       let item = document.createElement('div');
       item.className = 'item';
       item.innerText = choice[i].title;
@@ -197,7 +197,7 @@ $(document).ready(function(){
     return row;
   }
 
-  button.setElement($('#btn_action')).on('click', function(evt) {
+  button.setElement($('#btnAction')).on('click', function(evt) {
     evt.preventDefault();
     if (paginator.isAllRead()) {
       paginator.showNextPage();
