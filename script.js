@@ -94,6 +94,7 @@ $(document).ready(function(){
   let paginator = {
     /* variables */
     json: {},
+    lastPageElement : undefined,
     currentPage: undefined,
     currentLine: undefined,
     lastLine: undefined,
@@ -124,7 +125,7 @@ $(document).ready(function(){
     },
     showNextLine: function() {
       this.currentLine += 1;
-      var $line = $('#p' + this.currentPage + '-' + this.currentLine);
+      var $line = $('#' + this.lastPageElement.id + '-' + this.currentLine);
       if ($line.hasClass('choice')) {
         $line.css('display', 'flex').hide().fadeIn();
         button.enable(false);
@@ -158,16 +159,25 @@ $(document).ready(function(){
         paginator.link = 'end';
       }
 
+      // Theme
+      if (data.theme) {
+        document.body.className = data.theme;
+      } else {
+        document.body.className = '';
+      }
 
       // Create html element
       var el = document.createElement('div');
       el.className = 'ui very padded segment';
-      el.id = '#' + page;
+      el.id = 'page-' + Math.random().toString(36).substr(2);
+      el.setAttribute('prev', paginator.lastPageElement ? paginator.lastPageElement.id : '');
+      el.setAttribute('page', page);
+      paginator.lastPageElement = el;
 
       for (var i=0; i < data.sentences.length; ++i) {
         let p = document.createElement('p');
         p.innerText = data.sentences[i];
-        p.id = 'p' + page + '-' + (i+1);
+        p.id = el.id + '-' + (i+1);
         p.style.display = 'none';
         el.appendChild(p);
       }
@@ -176,7 +186,7 @@ $(document).ready(function(){
         paginator.lastLine += 1;
         el.setAttribute('choice', true);
         var choiceBox = createChoiceBox(data.choice);
-        choiceBox.id = 'p' + page + '-' + paginator.lastLine;
+        choiceBox.id = el.id + '-' + paginator.lastLine;
         el.appendChild(choiceBox);
       } else {
         paginator.metadata = data;
