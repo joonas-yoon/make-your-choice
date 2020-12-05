@@ -294,7 +294,8 @@ function drawDiagram(json) {
         var f = ids[i], t = page.choice[choices[j]].next;
         links.push({ key: f+'-'+t+'-'+j, from: f, to: t, text: page.choice[choices[j]].title });
       }
-    } else {
+    }
+    if (page.next) {
       var f = ids[i], t = page.next;
       links.push({ key: f+'-'+t, from: f, to: t, text: null });
     }

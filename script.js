@@ -43,9 +43,7 @@ $(document).ready(function(){
       condition = condition || [];
       for (let i = 0; i < condition.length; ++i) {
         let c = condition[i]; // [name, oper, value]
-        let name = c[0], x = this.items[name];
-        // skip if player does not have it
-        if (x === undefined) return false;
+        let name = c[0], x = this.items[name] || 0;
         if (cmp(c[1], x, c[2]) == false) return false;
       }
       return true;
@@ -188,10 +186,17 @@ $(document).ready(function(){
 
       if (!!data.choice) {
         paginator.lastLine += 1;
-        el.setAttribute('choice', true);
         var choiceBox = createChoiceBox(data.choice);
         choiceBox.id = el.id + '-' + paginator.lastLine;
-        el.appendChild(choiceBox);
+        // No option for select, then pass to next as default
+        if (choiceBox.childElementCount == 0) {
+          paginator.link = data.next || 'end'; // nothing to next, end game. (default ending)
+          paginator.metadata = data;
+          paginator.lastLine -= 1;
+        } else {
+          el.appendChild(choiceBox);
+          el.setAttribute('choice', true);
+        }
       } else {
         paginator.metadata = data;
       }

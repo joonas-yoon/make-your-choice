@@ -8,7 +8,14 @@
                 "In commodo, nibh at aliquet ornare, sapien ipsum lacinia dui, in commodo eros dolor ac lectus.",
                 "Sed et finibus lacus. Donec non dapibus nisi. Nam ac turpis dui. Nulla at mauris vestibulum, congue purus vel, luctus mi."
             ],
-            "next": 2
+            "next": 2,
+            "choice": [
+                {
+                    "title": "Can not see this option",
+                    "next": 3,
+                    "condition": ["gold", "gt", 10000]
+                }
+            ]
         },
         "2": {
             "sentences": [
@@ -16,6 +23,7 @@
                 "Nulla facilisi. Donec pulvinar quis nisi ac varius. Nam ut tellus massa. Praesent mollis at nisi sed aliquam.",
                 "Cras sagittis eros enim, nec sagittis arcu lobortis sed."
             ],
+            "next": 5,
             "choice": [
                 {
                     "title": "Get Gold 30",
