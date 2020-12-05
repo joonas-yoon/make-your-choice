@@ -60,28 +60,61 @@
               </div>
             </div>
           </div>
-          <div class="ui inverted toggle form">
-            <div class="required field">
-              <label>Option Text</label>
-              <input type="text" name="otext" placeholder="Option text here ..." value=""/>
+          <div class="forms">
+            <div class="ui inverted form">
+              <div class="required field">
+                <label>Option Text</label>
+                <input type="text" name="otext" placeholder="Option text here ..." value=""/>
+              </div>
             </div>
             <!-- conditions -->
-            <div class="field" id="edgeConditions">
-              <label>Conditions</label>
+            <div class="ui inverted form" id="edgeConditions">
+              <h4 class="ui dividing inverted header">Conditions</h4>
+              <div class="fields">
+                <div class="eight wide required field">
+                  <label>Item Name</label>
+                  <input type="text" value="">
+                </div>
+                <div class="four wide field">
+                  <label>&nbsp;</label>
+                  <select class="ui fluid inverted dropdown">
+                    <option value="eq">&equals;</option>
+                    <option value="ne">&ne;</option>
+                    <option value="lt">&lt;</option>
+                    <option value="le">&le;</option>
+                    <option value="gt">&gt;</option>
+                    <option value="ge">&ge;</option>
+                  </select>
+                </div>
+                <div class="four wide required field">
+                  <label>Count</label>
+                  <input type="number" value="0">
+                </div>
+              </div>
               <button class="ui basic fluid inverted add button">
                 <i class="plus icon"></i> Add condition
               </button>
             </div>
             <!-- updates -->
-            <div class="field" id="edgeUpdates">
-              <label>Updates</label>
+            <div class="ui inverted form" id="edgeUpdates">
+              <h4 class="ui dividing inverted header">Update Items</h4>
+              <div class="required fields">
+                <div class="twelve wide field">
+                  <label>Item Name</label>
+                  <input type="text" value="">
+                </div>
+                <div class="four wide field">
+                  <label>Count</label>
+                  <input type="number" value="0">
+                </div>
+              </div>
               <button class="ui basic fluid inverted add button">
                 <i class="plus icon"></i> Add updates
               </button>
             </div>
           </div>
-          <div class="ui inverted form" style="margin-bottom: 1rem;">
-            <div class="field" style="margin-top: 2rem;">
+          <div class="ui inverted form">
+            <div class="field">
               <button id="saveButton" class="ui primary button" type="button">Save</button>
               <button id="deleteButton" class="ui inverted red button" type="button">Delete</button>
             </div>
@@ -204,7 +237,7 @@ viewDiagram.toolManager.linkingTool.temporaryToPort = tempToNode.port;
 var sampleModel = _(go.GraphLinksModel);
 sampleModel.nodeDataArray =
 [
-  { key: "1", name: "Loading...", backgroundColor: null, textColor: "white" }
+  { key: 0, name: "Loading...", backgroundColor: null, textColor: "white" }
 ];
 viewDiagram.model = sampleModel;
 
@@ -299,11 +332,8 @@ function edgeClicked(e, obj) {
   editForm.querySelector('input[name=otext]').value = edge.data.text || '';
   var chkbox = editForm.querySelector('#propDirect');
   $(chkbox).checkbox({
-    onChecked: function(){
-      $(editForm.querySelector('.toggle.form')).transition('fade up');
-    },
-    onUnchecked: function(){
-      $(editForm.querySelector('.toggle.form')).transition('fade down');
+    onChange: function(){
+      $(editForm.querySelector('.forms')).transition('fade down');
     }
   }).checkbox(edge.data.key.split('-').length == 2 ? 'check' : 'uncheck');
   
@@ -328,6 +358,7 @@ function resizeTextarea(el) {
 }
 
 $('.ui.checkbox').checkbox();
+$('.ui.dropdown').dropdown();
 $('textarea').on('keydown keyup keypress', function() {
   resizeTextarea(this);
 });

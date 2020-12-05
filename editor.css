@@ -10,6 +10,10 @@ html, body {
     line-height: 1.5;
     background-color: #191919;
 }
+::selection {
+    background-color: #dedede;
+    color: rgb(255, 255, 255, 0.87);
+}
 /* editor */
 .nav {
     position: fixed;
@@ -49,6 +53,15 @@ html, body {
     overflow-x: hidden;
     background-color: #191919;
 }
+.forms .form {
+    margin-top: 2rem;
+}
+.forms .form:first-child {
+    margin-top: 0;
+}
+.forms .form:last-child {
+    margin-bottom: 2rem;
+}
 #viewer {
     position: absolute;
     left: 0;
@@ -74,14 +87,25 @@ html, body {
 #viewer .content .container {
     padding: 1rem 2rem;
 }
-#viewer textarea.editor {
+#viewer .ui.dropdown {
+    border-radius: 0;
+}
+#viewer .ui.inverted.dropdown {
+    background-color: #2e2e2e;
+    border-color: #262626;
+}
+#viewer textarea {
     height: 5rem;
     min-height: 5rem;
     max-height: none;
     line-height: 175%;
     resize: none;
 }
-#viewer textarea.editor, #edgeEditor input[type=text] {
+#viewer textarea,
+#viewer input[type=text],
+#viewer input[type=number],
+#viewer input[type=password],
+#viewer input[type=email] {
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
@@ -91,7 +115,11 @@ html, body {
     background: rgba(128, 128, 128, 0.2);
     transition: background-color .2s ease-in-out, border-color .2s ease-in-out;
 }
-#viewer textarea.editor:focus, #edgeEditor input[type=text]:focus {
+#viewer textarea:focus,
+#viewer input[type=text]:focus,
+#viewer input[type=number]:focus,
+#viewer input[type=password]:focus,
+#viewer input[type=email]:focus {
     border-bottom-color: #2185d0;
     background: rgba(128, 128, 128, 0.25);
 }
@@ -113,4 +141,7 @@ html, body {
     width: 50%;
     height: 100vh;
     border-left: 2px solid #1a1a1a;
+}
+#diagram canvas {
+    outline: 0;
 }
