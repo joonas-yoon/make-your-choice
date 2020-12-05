@@ -238,16 +238,25 @@ $(document).ready(function(){
       cache: false,
       dataType: 'json',
       async: false,
-      success: function(json) {
-        paginator.json = json;
-        paginator.createPage(json.start, function(el){
-          paginator.showPage(el);
-        });
+      success: function(data) {
+        startGameWithJson(data);
       },
       // complete: console.log,
       error: console.error
     });
   }
 
-  startGame();
+  function startGameWithJson(json) {
+    paginator.json = json;
+    paginator.createPage(json.start, function(el){
+      paginator.showPage(el);
+    });
+  }
+
+  var j = new URL(window.location.href).searchParams.get('j');
+  if (j != undefined && JSON.parse(j)) {
+    startGameWithJson(JSON.parse(j));
+  } else {
+    startGame();
+  }
 });
