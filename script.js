@@ -7,7 +7,6 @@ $(document).ready(function(){
     /* functions */
     hasCondition: function(condition) {
       function cmp(oper, a, b) {
-        console.log('compare', a, oper, b);
         if (oper == 'eq') return a == b;
         else if (oper == 'ne') return a != b;
         else if (oper == 'gt') return a > b;
@@ -17,19 +16,13 @@ $(document).ready(function(){
         return false;
       }
       // player.items has all items on condition?
-      condition = condition || {};
-      let keys = Object.keys(condition);
-      console.log(player.items);
-      for (let i = 0; i < keys.length; ++i) {
-        let x = this.items[keys[i]];
+      condition = condition || [];
+      for (let i = 0; i < condition.length; ++i) {
+        let c = condition[i]; // [name, oper, value]
+        let name = c[0], x = this.items[name];
         // skip if player does not have it
         if (x === undefined) return false;
-        // eq, ne, gt, ge, lt, le
-        let y = condition[keys[i]];
-        let ck = Object.keys(y);
-        for (let i = 0; i < ck.length; ++i) {
-          if (false == cmp(ck[i], x, y[ck[i]])) return false;
-        }
+        if (cmp(c[1], x, c[2]) == false) return false;
       }
       return true;
     },

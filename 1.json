@@ -65,11 +65,9 @@
                 {
                     "title": "*The answer?",
                     "next": 13,
-                    "condition": {
-                        "gold": {
-                            "eq": 42
-                        }
-                    }
+                    "condition": [
+                        ["gold", "eq", 42]
+                    ]
                 }
             ]
         },
@@ -130,21 +128,17 @@
                 {
                     "title": "*Has nothing",
                     "next": 9,
-                    "condition": {
-                        "gold": {
-                            "le": 0
-                        }
-                    }
+                    "condition": [
+                        ["gold", "le", 0]
+                    ]
                 },
                 {
                     "title": "*Get rich",
                     "next": 11,
-                    "condition": {
-                        "gold": {
-                            "gt": 0,
-                            "lt": 10
-                        }
-                    }
+                    "condition": [
+                        ["gold", "gt", 0],
+                        ["gold", "lt", 10]
+                    ]
                 }
             ]
         },
