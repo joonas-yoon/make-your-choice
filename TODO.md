@@ -23,6 +23,8 @@ Game
 - [ ] Theme
 - [ ] Ending modal
 - [ ] Default ending
+- [x] Recursive (fix bug)
+- [x] Keep selections on history
 
 Chore
 - [ ] Merge commons (script, css)

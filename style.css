@@ -88,13 +88,14 @@ html, body {
     cursor: pointer;
   }
 
-  #main .segment#main .segment.history .choice .item {
+  #main .segment.history .choice .item {
+    cursor: not-allowed;
     opacity: 0.5;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
   }
   
-  #main .segment#main .segment.history .choice .item.active {
+  #main .segment.history .choice .item.active {
     color: #1a1a1a;
     border-color: #1a1a1a;
     background-color: #ededed;

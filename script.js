@@ -93,6 +93,7 @@ $(document).ready(function(){
 
   let paginator = {
     /* variables */
+    json: {},
     currentPage: undefined,
     currentLine: undefined,
     lastLine: undefined,
@@ -148,57 +149,44 @@ $(document).ready(function(){
       button.setText('Continue');
     },
     createPage: function(page, callback) {
-      getSampleStory(page, function(data) {
-        // Get and Set next link
-        paginator.link = data.next;
-        paginator.lastLine = data.sentences.length || 0;
-        if (data.end) {
-          paginator.link = 'end';
-        }
+      var data = this.json.stories[page];
 
-        // Create html element
-        var el = document.createElement('div');
-        el.className = 'ui very padded segment';
-        el.id = 'p' + page;
+      // Get and Set next link
+      paginator.link = data.next;
+      paginator.lastLine = data.sentences.length || 0;
+      if (data.end) {
+        paginator.link = 'end';
+      }
 
-        for (var i=0; i < data.sentences.length; ++i) {
-          let p = document.createElement('p');
-          p.innerText = data.sentences[i];
-          p.id = 'p' + page + '-' + (i+1);
-          p.style.display = 'none';
-          el.appendChild(p);
-        }
 
-        if (!!data.choice) {
-          paginator.lastLine += 1;
-          el.setAttribute('choice', true);
-          var choiceBox = createChoiceBox(data.choice);
-          choiceBox.id = 'p' + page + '-' + paginator.lastLine;
-          el.appendChild(choiceBox);
-        } else {
-          paginator.metadata = data;
-        }
+      // Create html element
+      var el = document.createElement('div');
+      el.className = 'ui very padded segment';
+      el.id = '#' + page;
 
-        mainContainer.appendChild(el);
+      for (var i=0; i < data.sentences.length; ++i) {
+        let p = document.createElement('p');
+        p.innerText = data.sentences[i];
+        p.id = 'p' + page + '-' + (i+1);
+        p.style.display = 'none';
+        el.appendChild(p);
+      }
 
-        callback(el);
-      });
+      if (!!data.choice) {
+        paginator.lastLine += 1;
+        el.setAttribute('choice', true);
+        var choiceBox = createChoiceBox(data.choice);
+        choiceBox.id = 'p' + page + '-' + paginator.lastLine;
+        el.appendChild(choiceBox);
+      } else {
+        paginator.metadata = data;
+      }
+
+      mainContainer.appendChild(el);
+
+      callback(el);
     }
   };
-
-  function getSampleStory(id, callback){
-    $.ajax({
-      url: './1.json',
-      cache: false,
-      dataType: 'json',
-      async: false,
-      success: function(data) {
-        callback(data.stories[id]);
-      },
-      // complete: console.log,
-      error: console.error
-    });
-  }
 
   function selectChoiceEvent(evt) {
     evt.preventDefault();
@@ -243,9 +231,23 @@ $(document).ready(function(){
     }
     evt.target.scrollIntoView({behavior: 'smooth'});
   });
-  
-  // After load
-  paginator.createPage(1, function(el){
-    paginator.showPage(el);
-  });
+
+  function startGame(){
+    $.ajax({
+      url: './1.json',
+      cache: false,
+      dataType: 'json',
+      async: false,
+      success: function(json) {
+        paginator.json = json;
+        paginator.createPage(json.start, function(el){
+          paginator.showPage(el);
+        });
+      },
+      // complete: console.log,
+      error: console.error
+    });
+  }
+
+  startGame();
 });
