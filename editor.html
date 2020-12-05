@@ -138,9 +138,16 @@ var viewDiagram =
   _(go.Diagram, "diagram",
     {
       "grid.visible": true,
-      "undoManager.isEnabled": true,
+      "undoManager.isEnabled": false,
       layout: _(go.LayeredDigraphLayout, // specify a Diagram.layout that arranges trees
-                { direction: 90, layerSpacing: 25, columnSpacing: 100, setsPortSpots: false })
+        {
+          direction: 90,
+          layerSpacing: 70,
+          columnSpacing: 50,
+          setsPortSpots: false
+        }),
+      "linkingTool.isUnconnectedLinkValid": true,
+      "linkingTool.portGravity": 10
     });
 
 // the definition of the grid system
@@ -157,9 +164,6 @@ viewDiagram.grid =
 viewDiagram.nodeTemplate =
   _(go.Node, "Auto",
     {
-      isShadowed: true, shadowBlur: 1,
-      shadowOffset: new go.Point(0, 1),
-      shadowColor: "rgba(255, 255, 255, .2)",
       fromSpot: go.Spot.BottomSide,
       toSpot: go.Spot.TopSide,
       
@@ -172,7 +176,7 @@ viewDiagram.nodeTemplate =
     },
     
     _(go.Shape,
-      "RoundedRectangle", // string argument can name a predefined figure
+      "RoundedRectangle",
       { fill: "#fafafa", stroke: null },
       new go.Binding("fill", "backgroundColor")),
 
@@ -184,8 +188,6 @@ viewDiagram.nodeTemplate =
 
 viewDiagram.linkTemplate =
   _(go.Link,
-    // default routing is go.Link.Normal
-    // default corner is 0
     {
       routing: go.Link.AvoidsNodes,
       corner: 10,
@@ -198,10 +200,14 @@ viewDiagram.linkTemplate =
     },
 
     // the link path, a Shape
-    _(go.Shape, { stroke: "#ffffff" }),
+    _(go.Shape, {
+      strokeWidth: 2, stroke: "gray",
+      mouseEnter: function(e, obj) { obj.strokeWidth = 5; },
+      mouseLeave: function(e, obj) { obj.strokeWidth = 2; }
+    }),
 
     // if we wanted an arrowhead we would also add another Shape with toArrow defined:
-    _(go.Shape, { toArrow: "Standard", stroke: "#ffffff" }),
+    _(go.Shape, { toArrow: "Standard", stroke: "gray", fill: "gray" }),
     
     _(go.TextBlock, { segmentOffset: new go.Point(0, -10), segmentOrientation: go.Link.OrientUpright, margin: 3, stroke: "rgba(255, 255, 255, .5)" },
       new go.Binding("text", "text"))
@@ -335,7 +341,7 @@ function edgeClicked(e, obj) {
     onChange: function(){
       $(editForm.querySelector('.forms')).transition('fade down');
     }
-  }).checkbox(edge.data.key.split('-').length == 2 ? 'check' : 'uncheck');
+  }).checkbox((edge.data.key || '').split('-').length == 2 ? 'check' : 'uncheck');
   
   console.log(edge.data);
 }
