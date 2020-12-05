@@ -64,10 +64,13 @@
                 },
                 {
                     "title": "*The answer?",
-                    "next": 13,
+                    "next": 12,
                     "condition": [
                         ["gold", "eq", 42]
-                    ]
+                    ],
+                    "get": {
+                        "the answer to life the universe and everything": 1
+                    }
                 }
             ]
         },
@@ -180,6 +183,13 @@
                 {
                     "title": "Get a blue one.",
                     "next": 14
+                },
+                {
+                    "title": "So Long, and Thanks for All the Fish.",
+                    "next": 15,
+                    "condition": [
+                        ["the answer to life the universe and everything", "ge", 1]
+                    ]
                 }
             ]
         },
@@ -192,6 +202,12 @@
         "14": {
             "sentences": [
                 "[14] The end - B"
+            ],
+            "end": true
+        },
+        "15": {
+            "sentences": [
+                "[15] Thanks to play"
             ],
             "end": true
         }

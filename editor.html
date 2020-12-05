@@ -102,16 +102,14 @@
             <div class="ui inverted form meta" id="edgeUpdates">
               <h4 class="ui dividing inverted header">Update Items</h4>
               <!-- template -->
-              <div class="hidden fields" id="template">
-                <div class="required fields">
-                  <div class="twelve wide field">
-                    <label>Item Name</label>
-                    <input type="text" value="">
-                  </div>
-                  <div class="four wide field">
-                    <label>Count</label>
-                    <input type="number" value="0">
-                  </div>
+              <div class="hidden required fields" id="template">
+                <div class="twelve wide field">
+                  <label>Item Name</label>
+                  <input type="text" name="name" value="">
+                </div>
+                <div class="four wide field">
+                  <label>Count</label>
+                  <input type="number" name="count" value="0">
                 </div>
               </div>
               <!-- /template -->
@@ -358,6 +356,7 @@ function edgeClicked(e, obj) {
   function addNewItem(el) {
     var p = el.parentElement;
     var row = p.querySelector('#template').cloneNode(true);
+    row.removeAttribute('id');
     row.classList.remove('hidden');
     p.querySelector('.list').appendChild(row);
     p.querySelectorAll('.ui.dropdown').forEach(function(e, i){$(e).dropdown();})
@@ -366,9 +365,13 @@ function edgeClicked(e, obj) {
 
   var ecl = document.getElementById('edgeConditionsList');
   ecl.innerHTML = '';
+  var eul = document.getElementById('edgeUpdatesList');
+  eul.innerHTML = '';
+
   if (hasOption) {
     var idx = edge.data.key.split('-')[2];
-    var conds = dataFrom.choice[idx].condition || [];
+    var data = dataFrom.choice[idx];
+    var conds = data.condition || [];
     for (var i = 0; i < conds.length; ++i) {
       var name = conds[i][0];
       var oper = conds[i][1];
@@ -376,6 +379,15 @@ function edgeClicked(e, obj) {
       var row = addNewItem(ecl);
       row.querySelector('input[name=name]').value = name;
       $(row.querySelector('.dropdown')).dropdown('set selected', oper);
+      row.querySelector('input[name=count]').value = cnt;
+    }
+    
+    console.log(data);
+    var items = Object.keys(data.get || {});
+    for (var i = 0; i < items.length; ++i) {
+      var name = items[i], cnt = data.get[name];
+      var row = addNewItem(eul);
+      row.querySelector('input[name=name]').value = name;
       row.querySelector('input[name=count]').value = cnt;
     }
   }
