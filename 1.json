@@ -2,222 +2,303 @@
     "start": 1,
     "stories": {
         "1": {
+            "get": {
+                "돈": 100000
+            },
             "sentences": [
-                "[1] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut imperdiet dui sollicitudin massa mollis scelerisque sed quis felis.",
-                "Fusce placerat interdum tortor sed iaculis. Nunc ac pellentesque est, nec aliquet ex.",
-                "In commodo, nibh at aliquet ornare, sapien ipsum lacinia dui, in commodo eros dolor ac lectus.",
-                "Sed et finibus lacus. Donec non dapibus nisi. Nam ac turpis dui. Nulla at mauris vestibulum, congue purus vel, luctus mi."
+                "눈을 떴다.",
+                "창가 블라인드 사이로 햇살이 새어 들어온다.",
+                "헉, 오늘은 월요일이다. 벌써 아침 7시가 되었다."
             ],
-            "next": 2,
+            "next": 100,
             "choice": [
                 {
-                    "title": "Can not see this option",
-                    "next": 3,
-                    "condition": ["gold", "gt", 10000]
+                    "title": "5분만 더 자야겠다",
+                    "next": 99
+                },
+                {
+                    "title": "그냥 집에 있을래",
+                    "next": 2
+                },
+                {
+                    "title": "우선 나가서 생각하자",
+                    "next": 3
+                },
+                {
+                    "title": "출근 준비를 해볼까",
+                    "next": 4
                 }
             ]
         },
         "2": {
             "sentences": [
-                "[2] Fusce ullamcorper vitae purus id vestibulum. Ut a arcu ante. Donec eu urna nec sem molestie volutpat interdum ullamcorper lorem.",
-                "Nulla facilisi. Donec pulvinar quis nisi ac varius. Nam ut tellus massa. Praesent mollis at nisi sed aliquam.",
-                "Cras sagittis eros enim, nec sagittis arcu lobortis sed."
+                "집에 안락하고 따듯하다. 집에서 무얼 할까?"
             ],
-            "next": 5,
             "choice": [
                 {
-                    "title": "Get Gold 30",
-                    "next": 3,
+                    "title": "아무것도 하지 않는다",
+                    "next": 2,
+                    "condition": [
+                        ["돈", "ge", 0],
+                        ["시간", "ge", -30]
+                    ],
                     "get": {
-                        "gold": 30
+                        "시간": -1
                     }
                 },
                 {
-                    "title": "Drop Gold 20",
-                    "next": 3,
+                    "title": "아무것도 하지 않는다",
+                    "next": 98,
+                    "condition": [
+                        ["시간", "lt", -30]
+                    ],
                     "get": {
-                        "gold": -20
+                        "답답함": 1,
+                        "외로움": 1
                     }
                 },
                 {
-                    "title": "Nothing",
-                    "next": 5
+                    "title": "취미 생활",
+                    "next": 2,
+                    "condition": [
+                        ["돈", "ge", 0],
+                        ["시간", "ge", -24]
+                    ],
+                    "get": {
+                        "시간": -1
+                    }
+                },
+                {
+                    "title": "인터넷 쇼핑",
+                    "next": 2,
+                    "condition": [
+                        ["돈", "ge", 0],
+                        ["시간", "ge", -24]
+                    ],
+                    "get": {
+                        "시간": -2,
+                        "돈": -15000
+                    }
+                },
+                {
+                    "title": "게임/유튜브",
+                    "next": 2,
+                    "condition": [
+                        ["돈", "ge", 0],
+                        ["시간", "ge", -24]
+                    ],
+                    "get": {
+                        "시간": -3
+                    }
+                },
+                {
+                    "title": "할 수 있는 게...?",
+                    "next": 100,
+                    "condition": [
+                        ["돈", "lt", 0]
+                    ]
+                },
+                {
+                    "title": "회사에서 연락이 왔다",
+                    "next": 102,
+                    "condition": [
+                        ["시간", "lt", -28]
+                    ]
                 }
             ]
         },
         "3": {
             "sentences": [
-                "[3] Cras in auctor ex. Quisque cursus massa lorem, a consequat magna bibendum a.",
-                "Etiam mollis ipsum ante, non placerat erat gravida eget."
+                "외출 준비를 마치고 문 앞에 섰다.",
+                "잊고 나가는 건 없겠지?"
             ],
             "choice": [
                 {
-                    "title": "Nothing",
-                    "next": 4
+                    "title": "없다",
+                    "next": 97
                 },
                 {
-                    "title": "Get Gold 20",
-                    "next": 8,
+                    "title": "있다",
+                    "next": 5,
                     "get": {
-                        "gold": 20
-                    }
-                },
-                {
-                    "title": "Buy sword (-10G)",
-                    "next": 8,
-                    "get": {
-                        "gold": -10,
-                        "sword": 1
-                    }
-                },
-                {
-                    "title": "*The answer?",
-                    "next": 12,
-                    "condition": [
-                        ["gold", "eq", 42]
-                    ],
-                    "get": {
-                        "the answer to life the universe and everything": 1
+                        "마스크": 1
                     }
                 }
             ]
         },
         "4": {
             "sentences": [
-                "[4] Integer interdum vehicula turpis sed aliquam. Vivamus vel lacus ullamcorper, sollicitudin nisi id, euismod enim.",
-                "Maecenas arcu enim, mattis et neque at, gravida maximus risus. Donec tincidunt nisl quis iaculis porttitor."
+                "회사에 가기 싫다."
             ],
-            "next": 12
+            "choice": [
+                {
+                    "title": "진짜 싫다.",
+                    "next": 4
+                }
+            ]
         },
         "5": {
+            "theme": "blue",
+            "end": true,
             "sentences": [
-                "[5] Vestibulum pretium consectetur commodo. Sed consequat risus quis orci imperdiet ultricies.",
-                "Integer rutrum iaculis ante ut convallis."
+                "마스크때문에 답답하지만 그래도 바깥 공기를 마시니 좋다.",
+                "이제 어디로 갈까..."
             ],
             "choice": [
                 {
-                    "title": "Go to 6",
-                    "next": 6
+                    "title": "카페",
+                    "next": 101
                 },
                 {
-                    "title": "Go to 9",
-                    "next": 9
+                    "title": "PC방",
+                    "next": 101
                 },
                 {
-                    "title": "Go to 10",
-                    "next": 10
+                    "title": "노래방",
+                    "next": 101
+                },
+                {
+                    "title": "식당",
+                    "next": 101
                 }
             ]
         },
-        "6": {
+        "97": {
             "sentences": [
-                "[6] Nullam malesuada felis et mi ultrices, vitae semper erat sodales.",
-                "Duis id tortor sed enim dapibus auctor.",
-                "Nam quis interdum ante.",
-                "Praesent euismod arcu ipsum, nec venenatis enim placerat in."
-            ],
-            "next": 7
-        },
-        "7": {
-            "sentences": [
-                "[7] Praesent placerat, erat sit amet auctor dignissim, est ante sollicitudin enim, vel pretium libero leo ut augue.",
-                "Aliquam erat volutpat. Nulla ante nisi, ultricies non justo quis, auctor ullamcorper tortor.",
-                "Donec risus mi, pretium sed consectetur ut, pulvinar eu felis. Nam id elementum ipsum.",
-                "Suspendisse tellus purus, luctus id mi ut, blandit imperdiet enim.",
-                "Mauris porttitor placerat pharetra."
-            ],
-            "next": 8
-        },
-        "8": {
-            "sentences": [
-                "[8] Suspendisse auctor in nisi vel tincidunt. ",
-                "Donec scelerisque quam in tortor consectetur, in imperdiet est aliquet. ",
-                "Fusce sit amet nisi in lectus semper dignissim ut eget lectus. Curabitur laoreet efficitur tempor. ",
-                "Aliquam tempor vulputate rhoncus. Morbi feugiat augue consequat urna malesuada, et vulputate turpis porttitor. "
+                "무엇을 깜빡한 지 모른채 거리를 서성였다. 저 멀리서 누군가 나를 향해 뭐라하는 모습이 보였다.",
+                "이런, 마스크를 깜빡했었네.",
+                "멀리서 그 사람이 다가왔다.",
+                "\"외출 시 반드시 마스크 착용 부탁드립니다.\""
             ],
             "choice": [
                 {
-                    "title": "*Has nothing",
-                    "next": 9,
-                    "condition": [
-                        ["gold", "le", 0]
-                    ]
+                    "title": "마스크를 챙겨오자",
+                    "next": 5
                 },
                 {
-                    "title": "*Get rich",
-                    "next": 11,
-                    "condition": [
-                        ["gold", "gt", 0],
-                        ["gold", "lt", 10]
-                    ]
+                    "title": "돌아가기 귀찮다. 그냥 간다",
+                    "next": 103
                 }
             ]
         },
-        "9": {
+        "98": {
+            "get": {
+                "시간": -1
+            },
             "sentences": [
-                "[9] Aenean fringilla eros sit amet urna pretium, ut volutpat mauris pharetra. Sed vel nulla ex.",
-                "Nam pellentesque semper quam. Vestibulum eget tristique lectus. "
-            ],
-            "next": 10
-        },
-        "10": {
-            "sentences": [
-                "[10] Phasellus nec blandit elit. Proin porttitor vulputate nulla, vitae gravida lectus luctus in. ",
-                "Maecenas congue sagittis velit non pellentesque. In non tristique elit, in lacinia nunc. ",
-                "Fusce fermentum sapien non nibh porta laoreet. Ut rhoncus elit ipsum, nec varius metus placerat id. "
-            ],
-            "next": 11
-        },
-        "11": {
-            "sentences": [
-                "[11] Nam velit lorem, iaculis sed porta non, rutrum ut ipsum. Aliquam erat volutpat. ",
-                "Etiam et nibh vitae nisi malesuada luctus in ac eros. ",
-                "Vivamus felis orci, posuere non tellus vel, congue dignissim nisl. "
-            ],
-            "next": 12
-        },
-        "12": {
-            "sentences": [
-                "[12] Etiam nulla lorem, tincidunt eu massa aliquet, elementum pulvinar nulla.",
-                "Maecenas pretium lobortis tellus id lobortis.",
-                "Praesent justo est, vestibulum id ultrices faucibus, molestie a neque.",
-                "Ut vehicula nisl sed nunc suscipit, nec laoreet ligula sagittis."
+                "집은 더 이상 안락하고 따듯하지 않다."
             ],
             "choice": [
                 {
-                    "title": "Get a red one.",
-                    "next": 13
-                },
-                {
-                    "title": "Get a blue one.",
-                    "next": 14
-                },
-                {
-                    "title": "So Long, and Thanks for All the Fish.",
-                    "next": 15,
+                    "title": "아무것도 하지 않는다",
+                    "next": 98,
                     "condition": [
-                        ["the answer to life the universe and everything", "ge", 1]
+                        ["시간", "gt", -48]
                     ]
+                },
+                {
+                    "title": "아무것도 하지 않는다",
+                    "next": 104,
+                    "condition": [
+                        ["시간", "le", -48]
+                    ]
+                },
+                {
+                    "title": "외출한다",
+                    "next": 3
                 }
             ]
         },
-        "13": {
+        "99": {
             "sentences": [
-                "[13] The end - A"
+                "눈을 떴다.",
+                "지금 시간이...",
+                "10시?!",
+                "이제 나는 어떻게 해야할까"
             ],
-            "end": true
+            "choice": [
+                {
+                    "title": "일단 더 자야겠다",
+                    "next": 102
+                },
+                {
+                    "title": "택시 타고 출근해야겠다",
+                    "next": 4,
+                    "get": {
+                        "돈": -6000
+                    }
+                },
+                {
+                    "title": "모르겠다. 오늘은 그냥 집에 있을래",
+                    "next": 2
+                }
+            ]
         },
-        "14": {
+        "100": {
+            "end": true,
+            "theme": "dark",
+            "get": {
+                "재테크: 빚도 자산이다.": 1,
+                "집": -1,
+                "신용": -1
+            },
             "sentences": [
-                "[14] The end - B"
+                "나는 그렇게 파산했다."
             ],
-            "end": true
+            "next": 2
         },
-        "15": {
+        "101": {
+            "end": true,
+            "theme": "dark",
+            "get": {
+                "건강": -1,
+                "질병: COVID-19": 1
+            },
             "sentences": [
-                "[15] Thanks to play"
+                "당신은 코로나 위험에 노출되었습니다.",
+                "의료 기관을 방문하는 것 외에는 외출을 삼가하세요",
+                "집에 머무르세요. COVID-19에 걸린 사람들의 대부분은 가벼운 병증을 앓고 의료 기관의 도움 없이 집에서 회복할 수 있습니다. 의사의 진찰을 받아야 하는 경우 외에는 집을 벗어나지 않아야 하며, 공공 장소에 나가지 말아야 합니다.",
+                "자신을 돌보세요. 휴식을 취하고 수분을 충분히 섭취합니다. 몸이 회복될 수 있도록 아세트아미토펜과 같은 처방전 없이 살 수 있는 약을 복용합니다.",
+                "감염되었다면, 의사와 연락을 유지하세요. 의료 기관의 도움을 받기 전에 먼저 전화를 해야 합니다. 호흡곤란 또는 기타 응급 경고 징후가 나타나거나, 응급 상황으로 판단되면 반드시 의사의 진찰을 받으셔야 합니다.",
+                "차량 공유 서비스, 택시, 대중교통 수단 이용을 삼가하세요."
             ],
-            "end": true
+            "next": 2
+        },
+        "102": {
+            "end": true,
+            "get": {
+                "도비는 자유": 1,
+                "직장": -1
+            },
+            "sentences": [
+                "회사로부터 연락이 왔다. 내일부터는 출근하지 않아도 된다고 한다.",
+                "아니, 할 필요가 없다고 한다.",
+                "아무래도 자유를 얻은 것 같다."
+            ]
+        },
+        "103": {
+            "end": true,
+            "theme": "red",
+            "get": {
+                "돈": -100000
+            },
+            "sentences": [
+                "감염병예방법 제49조에 따른 마스크 착용 등 방역지침 준수 명령 위반으로 10만원 이하의 과태료가 부과되었다.",
+                "먼저 마스크를 착용하도록 지도했으나 따르지 않을 경우에 부과된다고 한다."
+            ]
+        },
+        "104": {
+            "end": true,
+            "theme": "dark",
+            "get": {
+                "나": -1,
+                "나의 세상": -1
+            },
+            "sentences": [
+                "나만의 공간은 편안하고 좋았다. 신경쓸 것 없이 편하고 그저 좋았다. 스트레스도 받지 않았다.",
+                "하지만 고립된 채, 위기에 다다를 것이라고 차마 생각하지 못했다.",
+                "나를 아무도 찾지 않을 줄, 나는 몰랐다."
+            ]
         }
     }
 }
