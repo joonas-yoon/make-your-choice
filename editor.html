@@ -127,7 +127,7 @@
         </div>
       </div>
       <div id="player" class="content">
-        <iframe src="index.html" style="width: 100%; height: 100vh; border: none; outline: 0; margin: 0; padding: 0;"></iframe>
+        <iframe src="" style="width: 100%; height: 100vh; border: none; outline: 0; margin: 0; padding: 0;"></iframe>
       </div>
     </div>
     <div id="diagram"></div>
@@ -165,10 +165,32 @@ viewDiagram.grid =
     _(go.Shape, "LineV", { stroke: "rgba(128, 128, 128, .9)", strokeWidth: 0.4, interval: 10 })
   );
 
+// This function provides a common style for most of the TextBlocks.
+// Some of these values may be overridden in a particular TextBlock.
+function textStyle(field) {
+  return [
+    {
+      font: "12px Roboto, sans-serif", stroke: "rgba(0, 0, 0, .60)",
+      visible: false  // only show textblocks when there is corresponding data for them
+    },
+    new go.Binding("visible", field, function(val) { return val !== undefined; })
+  ];
+}
+
+var roundedRectangleParams = {
+  parameter1: 2,  // set the rounded corner
+  spot1: go.Spot.TopLeft, spot2: go.Spot.BottomRight  // make content go all the way to inside edges of rounded corners
+};
+
 // the template we defined earlier
 viewDiagram.nodeTemplate =
   _(go.Node, "Auto",
     {
+      locationSpot: go.Spot.Top,
+      isShadowed: true, shadowBlur: 1,
+      shadowOffset: new go.Point(0, 1),
+      shadowColor: "rgba(0, 0, 0, .14)",
+
       fromSpot: go.Spot.AllSides,
       toSpot: go.Spot.AllSides,
       
@@ -177,18 +199,61 @@ viewDiagram.nodeTemplate =
       // fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
       // toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true,
 
-      click: nodeClicked
+      click: nodeClicked,
+      
+      selectionAdornmentTemplate:  // selection adornment to match shape of nodes
+        _(go.Adornment, "Auto",
+          _(go.Shape, "RoundedRectangle", roundedRectangleParams,
+            { fill: null, stroke: "#7986cb", strokeWidth: 5 }
+          ),
+          _(go.Placeholder)
+        )  // end Adornment
     },
     
-    _(go.Shape,
-      "RoundedRectangle",
-      { fill: "#fafafa", stroke: null },
-      new go.Binding("fill", "backgroundColor")),
-
-    _(go.TextBlock, "Default Text",
-      { margin: 12, stroke: "black", font: "normal 16px sans-serif", textAlign: "center", verticalAlignment: go.Spot.Center },
-      new go.Binding("text", "name"),
-      new go.Binding("stroke", "textColor"))
+    _(go.Shape, "RoundedRectangle", roundedRectangleParams,
+      new go.Binding("fill", "backgroundColor"),
+      { name: "SHAPE", fill: "#ffffff", strokeWidth: 0, width: 200 }
+    ),
+      
+    _(go.Panel, "Vertical",
+      _(go.Panel, "Horizontal",
+        { margin: new go.Margin(10, 16) },
+        _(go.Panel, "Table",
+          _(go.TextBlock,
+            {
+              row: 0, alignment: go.Spot.Left,
+              font: "1rem Roboto, sans-serif",
+              stroke: "rgba(0, 0, 0, .87)"
+            },
+            new go.Binding("text", "name"),
+            new go.Binding("stroke", "textColor")
+          ),
+          _("PanelExpanderButton", "INFO",
+            { row: 0, column: 1, margin: new go.Margin(0, 0, 0, 8) }
+          ),
+        )
+      ),
+      _(go.Shape, "LineH",
+        {
+          stroke: "rgba(0, 0, 0, .60)", strokeWidth: 1, width: 200,
+          height: 1, stretch: go.GraphObject.Horizontal
+        },
+        new go.Binding("stroke", "textColor"),
+        new go.Binding("visible").ofObject("INFO")  // only visible when info is expanded
+      ),
+      _(go.Panel, "Vertical",
+        {
+          name: "INFO",  // identify to the PanelExpanderButton
+          stretch: go.GraphObject.Horizontal,  // take up whole available width
+          margin: 8,
+          defaultAlignment: go.Spot.Left,  // thus no need to specify alignment on each element
+        },
+        _(go.TextBlock, textStyle("description"),
+          new go.Binding("stroke", "textColor"),
+          new go.Binding("text", "description", function(desc) { return desc; })
+        )
+      )
+    )
   );
 
 viewDiagram.linkTemplate =
@@ -279,9 +344,13 @@ function drawDiagram(json) {
   var nodes = [];
   var links = [];
   for(var i = 0; i < ids.length; ++i) {
-    var node = { key: ids[i], name: '#' + ids[i] };
+    var story = stories[ids[i]], desc = (story.sentences || []).join('\n');
+    var node = { key: ids[i], name: '#' + ids[i], description: desc.substr(0, 50) + (desc.length > 50 ? ' ···' : '') };
     if (json.start == ids[i]) {
-      node.backgroundColor = '#1e90ff';
+      node.backgroundColor = '#049372';
+      node.textColor = '#ffffff';
+    } else if (story.end) {
+      node.backgroundColor = '#9D2933';
       node.textColor = '#ffffff';
     }
     nodes.push(node);
