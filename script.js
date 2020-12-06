@@ -55,20 +55,20 @@ $(document).ready(function(){
         let name = keys[i];
         let value = newItems[name] || 0;
         this.items[name] = (this.items[name] || 0) + value;
-        let vtext = Math.abs(value) > 1 ? Math.abs(value) + '개 ' : '';
+        let vtext = Math.abs(value) > 1 ? ' (' + Number(Math.abs(value).toFixed(0)).toLocaleString() + ')' : '';
         if (value > 0) {
           $('body').toast({
             class: 'green',
-            message: '<b>' + name + '</b>을(를) ' + vtext + '얻었다.',
+            message: '<b>' + name + '</b>을(를) 얻었다.' + vtext,
             showProgress: 'bottom',
-            displayTime: 10 * 1000
+            displayTime: 5 * 1000
           });
         } else {
           $('body').toast({
             class: 'red',
-            message: '<b>' + name + '</b>을(를) ' + vtext + '잃었다.',
+            message: '<b>' + name + '</b>을(를) 잃었다.' + vtext,
             showProgress: 'bottom',
-            displayTime: 10 * 1000
+            displayTime: 5 * 1000
           });
         }
       }
@@ -166,6 +166,12 @@ $(document).ready(function(){
         document.body.className = data.theme;
       } else {
         document.body.className = '';
+      }
+
+      // Get Items
+      if (data.get) {
+        player.saveItems(data.get);
+        data.get = undefined;
       }
 
       // Create html element
