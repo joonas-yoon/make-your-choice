@@ -147,7 +147,7 @@ var viewDiagram =
       layout: _(go.LayeredDigraphLayout, // specify a Diagram.layout that arranges trees
         {
           direction: 90,
-          layerSpacing: 70,
+          layerSpacing: 200,
           columnSpacing: 50,
           setsPortSpots: false
         }),
@@ -169,13 +169,13 @@ viewDiagram.grid =
 viewDiagram.nodeTemplate =
   _(go.Node, "Auto",
     {
-      fromSpot: go.Spot.BottomSide,
-      toSpot: go.Spot.TopSide,
+      fromSpot: go.Spot.AllSides,
+      toSpot: go.Spot.AllSides,
       
       portId: "",
       cursor: "pointer",
-      fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
-      toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true,
+      // fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
+      // toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true,
 
       click: nodeClicked
     },
