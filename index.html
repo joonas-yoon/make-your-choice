@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.css">
   <link rel="stylesheet" href="style.css" type="text/css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <style>
+    #unsupported { width: 100%; height: 100%; position: fixed; background: rgba(0,0,0,.75); color: white; padding: 6em 2em; }
+    #unsupported a.browser { color: #b3b3b3; -ms-transition: all 0.25s ease-in-out; }
+    #unsupported a.browser:hover { color: #ffffff; text-decoration: none; -ms-transform: translate(0, -10px); }
+  </style>
 </head>
 <body>
   <div id="hud">
@@ -21,5 +26,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
   <script type="text/javascript" src="./script.js"></script>
+  <!-- Overlay for Unsupported Browser -->
+  <div id="unsupported">
+    <div class="ui text container">
+      <h1 class="ui inverted header">We do not support your browser</h1>
+      <p>Please update your browser to its latest version or download on of the following browsers:</p>
+      <div style="font-size: 3rem; text-align: center;margin-top: 2rem">
+        <a class="browser" href="https://www.google.com/chrome/"><i class="chrome icon"></i></a>
+        <a class="browser" href="https://www.mozilla.org/firefox/"><i class="firefox icon"></i></a>
+        <a class="browser" href="https://www.apple.com/safari/"><i class="safari icon"></i></a>
+        <a class="browser" href="https://www.opera.com/download"><i class="opera icon"></i></a>
+        <a class="browser" href="https://www.microsoft.com/edge"><i class="edge icon"></i></a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
