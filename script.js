@@ -148,15 +148,16 @@ $(document).ready(function(){
       this.currentLine = 1;
       $el.addClass('active').fadeIn();
       $($el.children()[0]).fadeIn();
-      button.enable(true);
       button.setText('Continue');
+      button.enable(this.lastPageElement.getAttribute('choice') && this.lastPageElement.childElementCount == 1 ? false : true);
     },
     createPage: function(page, callback) {
       var data = this.json.stories[page];
+      var sentences = data.sentences || [];
 
       // Get and Set next link
-      paginator.link = data.next;
-      paginator.lastLine = data.sentences.length || 0;
+      paginator.link = data.next || 'end'; // nothing to next, end game. (default ending)
+      paginator.lastLine = sentences.length || 0;
       if (data.end) {
         paginator.link = 'end';
       }
@@ -182,9 +183,9 @@ $(document).ready(function(){
       el.setAttribute('page', page);
       paginator.lastPageElement = el;
 
-      for (var i=0; i < data.sentences.length; ++i) {
+      for (var i=0; i < sentences.length; ++i) {
         let p = document.createElement('p');
-        p.innerText = data.sentences[i];
+        p.innerText = sentences[i];
         p.id = el.id + '-' + (i+1);
         p.style.display = 'none';
         el.appendChild(p);
@@ -196,7 +197,7 @@ $(document).ready(function(){
         choiceBox.id = el.id + '-' + paginator.lastLine;
         // No option for select, then pass to next as default
         if (choiceBox.childElementCount == 0) {
-          paginator.link = data.next || 'end'; // nothing to next, end game. (default ending)
+          paginator.link = data.next || 'end';
           paginator.metadata = data;
           paginator.lastLine -= 1;
         } else {
