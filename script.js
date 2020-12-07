@@ -59,6 +59,7 @@ $(document).ready(function(){
         if (value > 0) {
           $('body').toast({
             class: 'green',
+            position: 'bottom left',
             message: '<b>' + name + '</b>을(를) 얻었다.' + vtext,
             showProgress: 'bottom',
             displayTime: 5 * 1000
@@ -66,6 +67,7 @@ $(document).ready(function(){
         } else {
           $('body').toast({
             class: 'red',
+            position: 'bottom left',
             message: '<b>' + name + '</b>을(를) 잃었다.' + vtext,
             showProgress: 'bottom',
             displayTime: 5 * 1000
@@ -78,11 +80,13 @@ $(document).ready(function(){
 
   let button = {
     /* variables */
+    el: undefined,
     $el: undefined,
     /* functions */
     setElement: function(el) {
-      this.$el = el;
-      return this.$el;
+      this.el = el;
+      this.$el = $(el);
+      return this.el;
     },
     setText: function(text) {
       this.$el.text(text);
@@ -90,6 +94,10 @@ $(document).ready(function(){
     enable: function(boolean) {
       if (boolean) this.$el.removeAttr('disabled');
       else this.$el.attr('disabled', 1);
+    },
+    focus: function(opt) {
+      opt = opt || {behavior: 'smooth'};
+      this.el.scrollIntoView(opt);
     }
   };
 
@@ -117,11 +125,12 @@ $(document).ready(function(){
 
       if (this.link === 'end') {
         button.enable(false);
-        button.setText('- The End -');
+        button.setText('끝');
       } else {
         var self = this;
         this.createPage(this.link, function(el){
           self.showPage(el);
+          button.focus();
         });
       }
     },
@@ -131,13 +140,14 @@ $(document).ready(function(){
       if ($line.hasClass('choice')) {
         $line.css('display', 'flex').hide().fadeIn();
         button.enable(false);
-        button.setText('Select');
+        button.setText('선택하기');
       }
       else {
         button.enable(true);
-        button.setText(this.currentLine == this.lastLine ? 'Next' : 'Continue');
+        button.setText(this.currentLine == this.lastLine ? '다음' : '계속');
         $line.fadeIn();
       }
+      button.focus();
     },
     isAllRead: function() {
       return (this.currentLine || 0) >= (this.lastLine || 0);
@@ -148,8 +158,8 @@ $(document).ready(function(){
       this.currentLine = 1;
       $el.addClass('active').fadeIn();
       $($el.children()[0]).fadeIn();
-      button.setText('Continue');
       button.enable(this.lastPageElement.getAttribute('choice') && this.lastPageElement.childElementCount == 1 ? false : true);
+      button.setText('계속');
     },
     createPage: function(page, callback) {
       var data = this.json.stories[page];
@@ -163,9 +173,11 @@ $(document).ready(function(){
       }
 
       // Theme
-      if (data.theme) {
+      if (data.theme) { // custom
         document.body.className = data.theme;
-      } else {
+      } else if (this.json.theme) { // default
+        document.body.className = this.json.theme;
+      } else { // none
         document.body.className = '';
       }
 
@@ -224,6 +236,7 @@ $(document).ready(function(){
     button.enable(true);
     button.setText(el.innerText);
     el.classList.add('active');
+    button.focus();
   }
 
   function createChoiceBox(choice) {
@@ -248,7 +261,7 @@ $(document).ready(function(){
     return row;
   }
 
-  button.setElement($('#btnAction')).on('click', function(evt) {
+  $(button.setElement(document.getElementById('btnAction'))).on('click', function(evt) {
     evt.preventDefault();
     if (paginator.isAllRead()) {
       paginator.showNextPage();
