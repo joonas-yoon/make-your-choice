@@ -40,5 +40,12 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+    if (/Trident\/|MSIE/.test(window.navigator.userAgent) || /MSIE (\d+)/.exec(window.navigator.userAgent)) {
+      document.getElementById('unsupported').style.display = 'block';
+    } else {
+      document.getElementById('unsupported').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
