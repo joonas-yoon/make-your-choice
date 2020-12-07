@@ -158,6 +158,10 @@ html, body {
   text-align: center;
 }
 
+#btnRestart {
+  display: none;
+}
+
 @media (min-width: 576px) {
   #main .segment {
     border-radius: 0.2rem;

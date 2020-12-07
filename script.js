@@ -5,6 +5,12 @@ $(document).ready(function(){
     /* variables */
     container: document.getElementById('hud'),
     /* functions */
+    init: function() {
+      var inven = document.createElement('ul');
+      inven.id = 'inventory';
+      this.container.innerHTML = '';
+      this.container.appendChild(inven);
+    },
     updateInventory: function (items) {
       items = items || {};
       let inven = this.container.querySelector('#inventory');
@@ -29,6 +35,9 @@ $(document).ready(function(){
     /* variables */
     items : {},
     /* functions */
+    init: function() {
+      this.items = {};
+    },
     hasCondition: function(condition) {
       function cmp(oper, a, b) {
         if (oper == 'eq') return a == b;
@@ -111,6 +120,22 @@ $(document).ready(function(){
     link: undefined,
     metadata: undefined,
     /* functions */
+    init: function() {
+      this.json = {};
+      this.lastPageElement = undefined;
+      this.currentPage = undefined;
+      this.currentLine = undefined;
+      this.lastLine = undefined;
+      this.link = undefined;
+      this.metadata = undefined;
+      mainContainer.innerHTML = '';
+      $('#btnRestart').hide();
+    },
+    endGame: function() {
+      setTimeout(function(){
+        $('#endModal').modal('show');
+      }, 5 * 1000);
+    },
     showNextPage: function() {
       $('#p' + this.currentPage).removeClass('active');
       $('#p' + this.currentPage).addClass('history');
@@ -126,6 +151,7 @@ $(document).ready(function(){
       if (this.link === 'end') {
         button.enable(false);
         button.setText('끝');
+        this.endGame();
       } else {
         var self = this;
         this.createPage(this.link, function(el){
@@ -292,12 +318,30 @@ $(document).ready(function(){
     });
   }
 
-  var j = new URL(window.location.href).searchParams.get('j');
-  if (j != undefined && JSON.parse(j)) {
-    startGameWithJson(JSON.parse(j));
-  } else {
-    startGame();
+  function readyGame() {
+    hud.init();
+    player.init();
+    paginator.init();
+
+    var j = new URL(window.location.href).searchParams.get('j');
+    if (j != undefined && JSON.parse(j)) {
+      startGameWithJson(JSON.parse(j));
+    } else {
+      startGame();
+    }
   }
+  
+  readyGame();
+
+  $('#btnRestart').on('click', readyGame);
+  $('#endModal .restart.button').on('click', function(evt){
+    this.parentElement.querySelector('.close.button').click();
+    readyGame();
+  });
+  $('#endModal .close.button').on('click', function(evt){
+    $('#btnRestart').show();
+    $('#endModal').modal('hide');
+  });
 
   $('#hud').on('click', function(evt){
     this.classList.toggle('inactive');

@@ -16,13 +16,30 @@
   </style>
 </head>
 <body>
-  <div id="hud">
-    <ul id="inventory"></ul>
-  </div>
+  <div id="hud"></div>
   <div id="main" class="ui container"></div>
   <div class="actions" id="actions">
+    <button class="ui red button" id="btnRestart"><i class="redo alternative icon"></i> 다시하기</button>
     <button class="ui black button" id="btnAction" disabled>Loading...</button>
   </div>
+  <!-- ending modal -->
+  <div id="endModal" class="ui basic modal">
+    <h1 class="ui center aligned header">끝났습니다!</h1>
+    <div class="content" style="text-align: center; font-size: 1.2rem;">
+      <p>마지막 페이지입니다.</p>
+    </div>
+    <div class="actions" style="text-align: center;">
+      <div class="ui red restart button">
+        <i class="redo alternate icon"></i>
+        다시하기
+      </div>
+      <div class="ui grey close button">
+        <i class="times icon"></i>
+        닫기
+      </div>
+    </div>
+  </div>
+  <!-- /ending modal -->
   <!-- script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
