@@ -183,6 +183,9 @@ body.green { color: white; background-color:#006442; }
 body.green #main .segment { color: white; background-color: #357b52; }
 body.green #hud { color: rgba(255,255,255,.5); }
 body.green #hud .negative { color: rgba(217,255,11,.8); }
+body.yellow { color: #1a1a1a; background-color: #d8d68d; }
+body.yellow #main .segment { color: #151515; background-color: #f9f7bb; }
+body.yellow #hud { color: black; }
 body.gray { color: #2a2a2a; background-color:#BDC3C7; }
 body.gray #main .segment { color: #2a2a2a; background-color: #e4e4e4; }
 body.gray #hud { color: black; }
