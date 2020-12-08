@@ -1,6 +1,25 @@
 $(document).ready(function(){
   const mainContainer = document.getElementById('main');
 
+  let configs = {
+    /* variables */
+    json: {},
+    /* functions */
+    set: function(json) {
+      this.json = json || {};
+    },
+    get: function() {
+      return this.json;
+    },
+    isHiddenItem: function(name) {
+      // {config: {item: {hidden: []}}}
+      var j = this.json || {};
+      var i = j.item || {};
+      var h = i.hidden || [];
+      return h.indexOf(name) != -1;
+    }
+  };
+
   let hud = {
     /* variables */
     container: document.getElementById('hud'),
@@ -12,6 +31,7 @@ $(document).ready(function(){
       var keys = Object.keys(items).sort(function(a, b) { return items[a] - items[b]; });
       console.log(items);
       for (let i = 0; i < keys.length; ++i) {
+        if (configs.isHiddenItem(keys[i])) continue;
         let value = items[keys[i]];
         if (value == 0) continue;
         let item = document.createElement('li');
@@ -56,20 +76,24 @@ $(document).ready(function(){
         let value = newItems[name] || 0;
         this.items[name] = (this.items[name] || 0) + value;
         let vtext = Math.abs(value) > 1 ? ' (' + Number(Math.abs(value).toFixed(0)).toLocaleString() + ')' : '';
-        if (value > 0) {
-          $('body').toast({
-            class: 'green',
-            message: '<b>' + name + '</b>을(를) 얻었다.' + vtext,
-            showProgress: 'bottom',
-            displayTime: 5 * 1000
-          });
+        if (configs.isHiddenItem(keys[i])) {
+          // nothing alert
         } else {
-          $('body').toast({
-            class: 'red',
-            message: '<b>' + name + '</b>을(를) 잃었다.' + vtext,
-            showProgress: 'bottom',
-            displayTime: 5 * 1000
-          });
+          if (value > 0) {
+            $('body').toast({
+              class: 'green',
+              message: '<b>' + name + '</b>을(를) 얻었다.' + vtext,
+              showProgress: 'bottom',
+              displayTime: 5 * 1000
+            });
+          } else {
+            $('body').toast({
+              class: 'red',
+              message: '<b>' + name + '</b>을(를) 잃었다.' + vtext,
+              showProgress: 'bottom',
+              displayTime: 5 * 1000
+            });
+          }
         }
       }
       hud.updateInventory(this.items);
@@ -273,6 +297,7 @@ $(document).ready(function(){
 
   function startGameWithJson(json) {
     paginator.json = json;
+    configs.set(json.config);
     paginator.createPage(json.start, function(el){
       paginator.showPage(el);
     });
